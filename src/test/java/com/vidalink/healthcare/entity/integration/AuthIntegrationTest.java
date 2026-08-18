@@ -1,4 +1,4 @@
-package com.vidalink.healthcare.integration;
+package com.vidalink.healthcare.entity.integration;
 
 import com.vidalink.healthcare.identity.application.dto.request.LoginRequest;
 import com.vidalink.healthcare.identity.application.dto.request.RegisterRequest;
