@@ -1,6 +1,7 @@
 package com.vidalink.healthcare.marketplace.application.usecase;
 
 import com.vidalink.healthcare.marketplace.application.dto.response.RewardResponse;
+import com.vidalink.healthcare.marketplace.application.usecase.reward.GetRewardByNameUseCaseImpl;
 import com.vidalink.healthcare.marketplace.domain.exception.RewardNotFoundByNameException;
 import com.vidalink.healthcare.marketplace.domain.model.Reward;
 import com.vidalink.healthcare.marketplace.domain.repository.RewardRepository;

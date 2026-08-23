@@ -3,6 +3,7 @@ package com.vidalink.healthcare.marketplace.application.usecase;
 import com.vidalink.healthcare.marketplace.application.dto.request.CreateRewardRequest;
 import com.vidalink.healthcare.marketplace.application.dto.response.RewardResponse;
 import com.vidalink.healthcare.marketplace.application.port.out.FileStorage;
+import com.vidalink.healthcare.marketplace.application.usecase.reward.CreateRewardUseCaseImpl;
 import com.vidalink.healthcare.marketplace.domain.exception.RewardAlreadyExistsByNameException;
 import com.vidalink.healthcare.marketplace.domain.model.Reward;
 import com.vidalink.healthcare.marketplace.domain.repository.RewardRepository;
@@ -16,7 +17,6 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
 

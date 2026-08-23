@@ -1,4 +1,4 @@
-package com.vidalink.healthcare.marketplace.domain.model;
+package com.vidalink.healthcare.marketplace.domain.model.reward;
 
 import jakarta.persistence.*;
 import lombok.Data;

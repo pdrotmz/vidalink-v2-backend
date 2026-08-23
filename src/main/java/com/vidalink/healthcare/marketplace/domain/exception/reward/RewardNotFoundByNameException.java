@@ -1,4 +1,4 @@
-package com.vidalink.healthcare.marketplace.domain.exception;
+package com.vidalink.healthcare.marketplace.domain.exception.reward;
 
 public class RewardNotFoundByNameException extends RuntimeException {
     public RewardNotFoundByNameException(String name) {

@@ -1,6 +1,7 @@
 package com.vidalink.healthcare.marketplace.application.usecase;
 
-import com.vidalink.healthcare.marketplace.application.dto.response.RewardResponse;
+import com.vidalink.healthcare.marketplace.application.usecase.reward.DeactivateRewardUseCaseImpl;
+import com.vidalink.healthcare.marketplace.domain.exception.RewardNotFoundByIdException;
 import com.vidalink.healthcare.marketplace.domain.model.Reward;
 import com.vidalink.healthcare.marketplace.domain.repository.RewardRepository;
 import org.junit.jupiter.api.Test;
@@ -9,25 +10,24 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class GetAllRewardsByNameIgnoreCaseUseCaseImplTest {
+public class DeactivateRewardUseCaseImplTest {
 
     @Mock
     private RewardRepository rewardRepository;
 
     @InjectMocks
-    private GetAllRewardsByNameIgnoreCaseUseCaseImpl useCase;
+    private DeactivateRewardUseCaseImpl useCase;
 
     @Test
-    void shouldReturnRewardsByName() {
-
+    void shouldReturnDeactivateReward() {
         UUID rewardId = UUID.randomUUID();
 
         Reward reward = new Reward();
@@ -37,14 +37,21 @@ public class GetAllRewardsByNameIgnoreCaseUseCaseImplTest {
         reward.setStock(120);
         reward.setActive(true);
 
-        when(rewardRepository.findByNameContainingIgnoreCase("gift"))
-                .thenReturn(List.of(reward));
+        when(rewardRepository.findById(rewardId)).thenReturn(Optional.of(reward));
 
-        List<RewardResponse> result = useCase.execute("gift");
+        useCase.execute(reward.getId());
 
-        assertEquals(1, result.size());
-        assertEquals("GIFT CARD LOL", result.getFirst().name());
+        verify(rewardRepository).findById(rewardId);
+    }
 
-        verify(rewardRepository).findByNameContainingIgnoreCase("gift");
+    @Test
+    void shouldThrowsNotFoundByIdException() {
+        UUID id = UUID.randomUUID();
+
+        when(rewardRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThrows(RewardNotFoundByIdException.class, () -> useCase.execute(id));
+
+        verify(rewardRepository).findById(id);
     }
 }

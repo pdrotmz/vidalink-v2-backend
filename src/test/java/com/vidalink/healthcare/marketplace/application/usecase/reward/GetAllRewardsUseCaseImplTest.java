@@ -1,6 +1,7 @@
 package com.vidalink.healthcare.marketplace.application.usecase;
 
 import com.vidalink.healthcare.marketplace.application.dto.response.RewardResponse;
+import com.vidalink.healthcare.marketplace.application.usecase.reward.GetAllRewardsUseCaseImpl;
 import com.vidalink.healthcare.marketplace.domain.model.Reward;
 import com.vidalink.healthcare.marketplace.domain.repository.RewardRepository;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package com.vidalink.healthcare.marketplace.domain.exception;
+package com.vidalink.healthcare.marketplace.domain.exception.reward;
 
 import java.util.UUID;
 

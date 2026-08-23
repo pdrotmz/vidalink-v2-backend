@@ -2,6 +2,7 @@ package com.vidalink.healthcare.marketplace.application.usecase;
 
 import com.vidalink.healthcare.marketplace.application.dto.response.RewardResponse;
 import com.vidalink.healthcare.marketplace.application.port.out.FileStorage;
+import com.vidalink.healthcare.marketplace.application.usecase.reward.UpdateRewardImageUseCaseImpl;
 import com.vidalink.healthcare.marketplace.domain.exception.ImageEmptyException;
 import com.vidalink.healthcare.marketplace.domain.exception.RewardNotFoundByIdException;
 import com.vidalink.healthcare.marketplace.domain.model.Reward;
@@ -16,7 +17,6 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
 import java.util.UUID;
