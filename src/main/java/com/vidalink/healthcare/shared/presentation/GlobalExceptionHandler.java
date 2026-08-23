@@ -1,11 +1,14 @@
 package com.vidalink.healthcare.shared.presentation;
 
+import com.vidalink.healthcare.assessment.domain.exception.SubmissionExceedFileSizeException;
+import com.vidalink.healthcare.assessment.domain.exception.SubmissionFileFormatNotAcceptedException;
+import com.vidalink.healthcare.assessment.domain.exception.SubmissionNotFoundByIdException;
+import com.vidalink.healthcare.assessment.domain.exception.SubmissionNotSentException;
 import com.vidalink.healthcare.identity.application.dto.response.ErrorResponse;
 import com.vidalink.healthcare.identity.domain.exception.CpfAlreadyExistsException;
 import com.vidalink.healthcare.identity.domain.exception.EmailAlreadyExistsException;
 import com.vidalink.healthcare.identity.domain.exception.InvalidCredentialsException;
 import com.vidalink.healthcare.identity.domain.exception.UserNotFoundException;
-import com.vidalink.healthcare.marketplace.domain.exception.ImageEmptyException;
 import com.vidalink.healthcare.marketplace.domain.exception.RewardAlreadyExistsByNameException;
 import com.vidalink.healthcare.marketplace.domain.exception.RewardNotFoundByIdException;
 import com.vidalink.healthcare.marketplace.domain.exception.RewardNotFoundByNameException;
@@ -14,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.time.LocalDateTime;
 
@@ -108,12 +112,48 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
-    @ExceptionHandler(ImageEmptyException.class)
-    public ResponseEntity<ErrorResponse> handleImageEmptyException(ImageEmptyException exception, WebRequest request) {
+    @ExceptionHandler(SubmissionNotSentException.class)
+    public ResponseEntity<ErrorResponse> handleSubmissionNotSentException(SubmissionNotSentException exception, WebRequest request) {
         ErrorResponse response = new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
                 HttpStatus.BAD_REQUEST.getReasonPhrase(),
                 exception.getMessage(),
+                LocalDateTime.now(),
+                request.getDescription(false).replace("uri=", "")
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(SubmissionFileFormatNotAcceptedException.class)
+    public ResponseEntity<ErrorResponse> handleSubmissionFileFormatNotAcceptedException(SubmissionFileFormatNotAcceptedException exception, WebRequest request) {
+        ErrorResponse response = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                exception.getMessage(),
+                LocalDateTime.now(),
+                request.getDescription(false).replace("uri=", "")
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(SubmissionNotFoundByIdException.class)
+    public ResponseEntity<ErrorResponse> handleSubmissionNotFoundByIdException(SubmissionNotFoundByIdException exception, WebRequest request) {
+        ErrorResponse response = new ErrorResponse(
+                HttpStatus.NOT_FOUND.value(),
+                HttpStatus.NOT_FOUND.getReasonPhrase(),
+                exception.getMessage(),
+                LocalDateTime.now(),
+                request.getDescription(false).replace("uri=", "")
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<ErrorResponse> handleMaxUploadSizeExceededExceptionException(MaxUploadSizeExceededException exception, WebRequest request) {
+        ErrorResponse response = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                "The file size bust be under 3MB",
                 LocalDateTime.now(),
                 request.getDescription(false).replace("uri=", "")
         );
