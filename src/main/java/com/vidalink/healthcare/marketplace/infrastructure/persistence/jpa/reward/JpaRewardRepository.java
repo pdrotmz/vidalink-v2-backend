@@ -1,6 +1,6 @@
-package com.vidalink.healthcare.marketplace.infrastructure.persistence.jpa;
+package com.vidalink.healthcare.marketplace.infrastructure.persistence.jpa.reward;
 
-import com.vidalink.healthcare.marketplace.domain.model.Reward;
+import com.vidalink.healthcare.marketplace.domain.model.reward.Reward;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

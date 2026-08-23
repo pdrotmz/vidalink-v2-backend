@@ -1,8 +1,8 @@
-package com.vidalink.healthcare.marketplace.infrastructure.persistence.adapter;
+package com.vidalink.healthcare.marketplace.infrastructure.persistence.adapter.reward;
 
-import com.vidalink.healthcare.marketplace.domain.model.Reward;
-import com.vidalink.healthcare.marketplace.domain.repository.RewardRepository;
-import com.vidalink.healthcare.marketplace.infrastructure.persistence.jpa.JpaRewardRepository;
+import com.vidalink.healthcare.marketplace.domain.model.reward.Reward;
+import com.vidalink.healthcare.marketplace.domain.repository.reward.RewardRepository;
+import com.vidalink.healthcare.marketplace.infrastructure.persistence.jpa.reward.JpaRewardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
