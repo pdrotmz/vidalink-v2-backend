@@ -61,7 +61,15 @@ public class SecurityConfig {
                                 "/api/rewards/name/{name}",
                                 "/api/rewards/search",
                                 "/api/rewards/update/{id}",
-                                "/api/rewards/id/{id}/deactivate"
+                                "/api/rewards/id/{id}/deactivate",
+
+                                // Redemption endpoints
+                                "/api/redemptions/redeem",
+                                "/api/redemptions",
+                                "/api/redemptions/id/{id}",
+                                "/api/redemptions/user/id/{id}",
+                                "/api/redemptions/reward/id/{id}"
+
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
