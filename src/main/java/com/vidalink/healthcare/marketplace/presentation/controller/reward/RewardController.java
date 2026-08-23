@@ -1,8 +1,8 @@
-package com.vidalink.healthcare.marketplace.presentation.controller;
+package com.vidalink.healthcare.marketplace.presentation.controller.reward;
 
-import com.vidalink.healthcare.marketplace.application.dto.request.CreateRewardRequest;
-import com.vidalink.healthcare.marketplace.application.dto.request.UpdateRewardRequest;
-import com.vidalink.healthcare.marketplace.application.dto.response.RewardResponse;
+import com.vidalink.healthcare.marketplace.application.dto.request.reward.CreateRewardRequest;
+import com.vidalink.healthcare.marketplace.application.dto.request.reward.UpdateRewardRequest;
+import com.vidalink.healthcare.marketplace.application.dto.response.reward.RewardResponse;
 import com.vidalink.healthcare.marketplace.application.usecase.reward.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
