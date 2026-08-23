@@ -1,6 +1,5 @@
 package com.vidalink.healthcare.shared.presentation;
 
-import com.vidalink.healthcare.assessment.domain.exception.SubmissionExceedFileSizeException;
 import com.vidalink.healthcare.assessment.domain.exception.SubmissionFileFormatNotAcceptedException;
 import com.vidalink.healthcare.assessment.domain.exception.SubmissionNotFoundByIdException;
 import com.vidalink.healthcare.assessment.domain.exception.SubmissionNotSentException;
@@ -9,15 +8,16 @@ import com.vidalink.healthcare.identity.domain.exception.CpfAlreadyExistsExcepti
 import com.vidalink.healthcare.identity.domain.exception.EmailAlreadyExistsException;
 import com.vidalink.healthcare.identity.domain.exception.InvalidCredentialsException;
 import com.vidalink.healthcare.identity.domain.exception.UserNotFoundException;
-import com.vidalink.healthcare.marketplace.domain.exception.RewardAlreadyExistsByNameException;
-import com.vidalink.healthcare.marketplace.domain.exception.RewardNotFoundByIdException;
-import com.vidalink.healthcare.marketplace.domain.exception.RewardNotFoundByNameException;
+import com.vidalink.healthcare.marketplace.domain.exception.redemption.*;
+import com.vidalink.healthcare.marketplace.domain.exception.reward.ImageEmptyException;
+import com.vidalink.healthcare.marketplace.domain.exception.reward.RewardAlreadyExistsByNameException;
+import com.vidalink.healthcare.marketplace.domain.exception.reward.RewardNotFoundByIdException;
+import com.vidalink.healthcare.marketplace.domain.exception.reward.RewardNotFoundByNameException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.time.LocalDateTime;
 
@@ -112,6 +112,31 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
+    @ExceptionHandler(RewardInsufficientStockException.class)
+    public ResponseEntity<ErrorResponse> handleRewardInsufficientStockException(RewardInsufficientStockException exception, WebRequest request) {
+        ErrorResponse response = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                exception.getMessage(),
+                LocalDateTime.now(),
+                request.getDescription(false).replace("uri=", "")
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(ImageEmptyException.class)
+    public ResponseEntity<ErrorResponse> handleImageEmptyException(ImageEmptyException exception, WebRequest request) {
+        ErrorResponse response = new ErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST.getReasonPhrase(),
+                exception.getMessage(),
+                LocalDateTime.now(),
+                request.getDescription(false).replace("uri=", "")
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    //ASSESSMENT
     @ExceptionHandler(SubmissionNotSentException.class)
     public ResponseEntity<ErrorResponse> handleSubmissionNotSentException(SubmissionNotSentException exception, WebRequest request) {
         ErrorResponse response = new ErrorResponse(
@@ -148,15 +173,52 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
-    @ExceptionHandler(MaxUploadSizeExceededException.class)
-    public ResponseEntity<ErrorResponse> handleMaxUploadSizeExceededExceptionException(MaxUploadSizeExceededException exception, WebRequest request) {
+    // REDEMPTION
+    @ExceptionHandler(RedemptionAmountUnderThanZeroException.class)
+    public ResponseEntity<ErrorResponse> handleRedemptionAmountUnderThanZeroException(RedemptionAmountUnderThanZeroException exception, WebRequest request) {
         ErrorResponse response = new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
                 HttpStatus.BAD_REQUEST.getReasonPhrase(),
-                "The file size bust be under 3MB",
+                exception.getMessage(),
                 LocalDateTime.now(),
                 request.getDescription(false).replace("uri=", "")
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(RedemptionNotFoundByIdException.class)
+    public ResponseEntity<ErrorResponse> handleRedemptionNotFoundByIdException(RedemptionNotFoundByIdException exception, WebRequest request) {
+        ErrorResponse response = new ErrorResponse(
+                HttpStatus.NOT_FOUND.value(),
+                HttpStatus.NOT_FOUND.getReasonPhrase(),
+                exception.getMessage(),
+                LocalDateTime.now(),
+                request.getDescription(false).replace("uri=", "")
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(RedemptionNotFoundByIdRewardException.class)
+    public ResponseEntity<ErrorResponse> handleRedemptionNotFoundByIdRewardException(RedemptionNotFoundByIdRewardException exception, WebRequest request) {
+        ErrorResponse response = new ErrorResponse(
+                HttpStatus.NOT_FOUND.value(),
+                HttpStatus.NOT_FOUND.getReasonPhrase(),
+                exception.getMessage(),
+                LocalDateTime.now(),
+                request.getDescription(false).replace("uri=", "")
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(RedemptionNotFoundByIdUserException.class)
+    public ResponseEntity<ErrorResponse> handleRedemptionNotFoundByIdUserException(RedemptionNotFoundByIdUserException exception, WebRequest request) {
+        ErrorResponse response = new ErrorResponse(
+                HttpStatus.NOT_FOUND.value(),
+                HttpStatus.NOT_FOUND.getReasonPhrase(),
+                exception.getMessage(),
+                LocalDateTime.now(),
+                request.getDescription(false).replace("uri=", "")
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 }

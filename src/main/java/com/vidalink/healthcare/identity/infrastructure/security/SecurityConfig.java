@@ -63,6 +63,13 @@ public class SecurityConfig {
                                 "/api/rewards/update/{id}",
                                 "/api/rewards/id/{id}/deactivate",
 
+                                // Redemption endpoints
+                                "/api/redemptions/redeem",
+                                "/api/redemptions",
+                                "/api/redemptions/id/{id}",
+                                "/api/redemptions/user/id/{id}",
+                                "/api/redemptions/reward/id/{id}",
+
                                 // Submission endpoints
                                 "/api/submission/send",
                                 "/api/submissions",
