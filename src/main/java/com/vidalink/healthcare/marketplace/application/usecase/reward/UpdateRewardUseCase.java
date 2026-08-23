@@ -1,7 +1,7 @@
-package com.vidalink.healthcare.marketplace.application.usecase;
+package com.vidalink.healthcare.marketplace.application.usecase.reward;
 
-import com.vidalink.healthcare.marketplace.application.dto.request.UpdateRewardRequest;
-import com.vidalink.healthcare.marketplace.application.dto.response.RewardResponse;
+import com.vidalink.healthcare.marketplace.application.dto.request.reward.UpdateRewardRequest;
+import com.vidalink.healthcare.marketplace.application.dto.response.reward.RewardResponse;
 
 import java.util.UUID;
 

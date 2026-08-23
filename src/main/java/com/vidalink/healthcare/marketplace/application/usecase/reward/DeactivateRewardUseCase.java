@@ -1,4 +1,4 @@
-package com.vidalink.healthcare.marketplace.application.usecase;
+package com.vidalink.healthcare.marketplace.application.usecase.reward;
 
 import java.util.UUID;
 

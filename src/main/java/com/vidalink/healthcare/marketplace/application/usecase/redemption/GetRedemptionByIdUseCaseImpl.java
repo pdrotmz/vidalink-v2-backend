@@ -1,0 +1,26 @@
+package com.vidalink.healthcare.marketplace.application.usecase.redemption;
+
+import com.vidalink.healthcare.marketplace.application.dto.response.redemption.RedemptionResponse;
+import com.vidalink.healthcare.marketplace.domain.exception.redemption.RedemptionNotFoundByIdException;
+import com.vidalink.healthcare.marketplace.domain.model.redemption.Redemption;
+import com.vidalink.healthcare.marketplace.domain.repository.redemption.RedemptionRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.UUID;
+
+@Service
+@RequiredArgsConstructor
+public class GetRedemptionByIdUseCaseImpl implements GetRedemptionByIdUseCase{
+
+    private final RedemptionRepository redemptionRepository;
+
+    @Override
+    public RedemptionResponse execute(UUID id) {
+        Redemption redemption = redemptionRepository.findById(id)
+                .orElseThrow(() -> new RedemptionNotFoundByIdException("Redemption not found with id: " + id));
+
+        return RedemptionResponse.from(redemption);
+    }
+
+}

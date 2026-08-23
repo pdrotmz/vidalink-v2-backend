@@ -1,8 +1,7 @@
-package com.vidalink.healthcare.marketplace.application.dto.request;
+package com.vidalink.healthcare.marketplace.application.dto.request.reward;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.web.multipart.MultipartFile;
 
 public record CreateRewardRequest(
 

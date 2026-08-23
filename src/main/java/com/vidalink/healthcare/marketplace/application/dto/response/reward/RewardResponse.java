@@ -1,7 +1,6 @@
-package com.vidalink.healthcare.marketplace.application.dto.response;
+package com.vidalink.healthcare.marketplace.application.dto.response.reward;
 
-import com.vidalink.healthcare.marketplace.domain.model.Reward;
-import org.springframework.web.multipart.MultipartFile;
+import com.vidalink.healthcare.marketplace.domain.model.reward.Reward;
 
 import java.util.UUID;
 

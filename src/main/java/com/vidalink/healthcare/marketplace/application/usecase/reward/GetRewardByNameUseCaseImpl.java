@@ -1,9 +1,9 @@
-package com.vidalink.healthcare.marketplace.application.usecase;
+package com.vidalink.healthcare.marketplace.application.usecase.reward;
 
-import com.vidalink.healthcare.marketplace.application.dto.response.RewardResponse;
-import com.vidalink.healthcare.marketplace.domain.exception.RewardNotFoundByNameException;
-import com.vidalink.healthcare.marketplace.domain.model.Reward;
-import com.vidalink.healthcare.marketplace.domain.repository.RewardRepository;
+import com.vidalink.healthcare.marketplace.application.dto.response.reward.RewardResponse;
+import com.vidalink.healthcare.marketplace.domain.exception.reward.RewardNotFoundByNameException;
+import com.vidalink.healthcare.marketplace.domain.model.reward.Reward;
+import com.vidalink.healthcare.marketplace.domain.repository.reward.RewardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
