@@ -1,12 +1,11 @@
-package com.vidalink.healthcare.marketplace.application.usecase;
+package com.vidalink.healthcare.marketplace.application.usecase.reward;
 
-import com.vidalink.healthcare.marketplace.application.dto.request.CreateRewardRequest;
-import com.vidalink.healthcare.marketplace.application.dto.response.RewardResponse;
+import com.vidalink.healthcare.marketplace.application.dto.request.reward.CreateRewardRequest;
+import com.vidalink.healthcare.marketplace.application.dto.response.reward.RewardResponse;
 import com.vidalink.healthcare.marketplace.application.port.out.FileStorage;
-import com.vidalink.healthcare.marketplace.application.usecase.reward.CreateRewardUseCaseImpl;
-import com.vidalink.healthcare.marketplace.domain.exception.RewardAlreadyExistsByNameException;
-import com.vidalink.healthcare.marketplace.domain.model.Reward;
-import com.vidalink.healthcare.marketplace.domain.repository.RewardRepository;
+import com.vidalink.healthcare.marketplace.domain.exception.reward.RewardAlreadyExistsByNameException;
+import com.vidalink.healthcare.marketplace.domain.model.reward.Reward;
+import com.vidalink.healthcare.marketplace.domain.repository.reward.RewardRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
