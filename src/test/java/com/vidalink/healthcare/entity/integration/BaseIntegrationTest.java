@@ -1,4 +1,4 @@
-package com.vidalink.healthcare.integration;
+package com.vidalink.healthcare.entity.integration;
 
 import com.vidalink.healthcare.HealthcareApplication;
 import jakarta.transaction.Transactional;

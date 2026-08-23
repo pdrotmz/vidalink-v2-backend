@@ -5,13 +5,11 @@ import com.vidalink.healthcare.identity.application.usecase.GetCurrentUserUseCas
 import com.vidalink.healthcare.identity.domain.enums.UserRole;
 import com.vidalink.healthcare.identity.domain.model.User;
 import com.vidalink.healthcare.identity.infrastructure.security.JwtAuthenticationFilter;
-import com.vidalink.healthcare.identity.infrastructure.security.SecurityConfig;
 import com.vidalink.healthcare.identity.presentation.controller.UserController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 
@@ -24,7 +22,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

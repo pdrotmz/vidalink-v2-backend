@@ -45,10 +45,23 @@ public class SecurityConfig {
                         ))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers(
+
+                                // Auth endpoints
                                 "/api/auth/register",
                                 "/api/auth/login",
                                 "/api/users/me",
-                                "/h2-console/**"
+
+                                // H2 endpoints
+                                "/h2-console/**",
+
+                                // Reward endpoints
+                                "/api/rewards/create",
+                                "/api/rewards",
+                                "/api/rewards/id/{id}",
+                                "/api/rewards/name/{name}",
+                                "/api/rewards/search",
+                                "/api/rewards/update/{id}",
+                                "/api/rewards/id/{id}/deactivate"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
