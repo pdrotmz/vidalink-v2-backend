@@ -5,7 +5,6 @@ import com.vidalink.healthcare.identity.domain.exception.CpfAlreadyExistsExcepti
 import com.vidalink.healthcare.identity.domain.exception.EmailAlreadyExistsException;
 import com.vidalink.healthcare.identity.domain.exception.InvalidCredentialsException;
 import com.vidalink.healthcare.identity.domain.exception.UserNotFoundException;
-import com.vidalink.healthcare.marketplace.domain.exception.redemption.*;
 import com.vidalink.healthcare.marketplace.domain.exception.reward.ImageEmptyException;
 import com.vidalink.healthcare.marketplace.domain.exception.reward.RewardAlreadyExistsByNameException;
 import com.vidalink.healthcare.marketplace.domain.exception.reward.RewardNotFoundByIdException;
@@ -109,18 +108,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
-    @ExceptionHandler(RewardInsufficientStockException.class)
-    public ResponseEntity<ErrorResponse> handleRewardInsufficientStockException(RewardInsufficientStockException exception, WebRequest request) {
-        ErrorResponse response = new ErrorResponse(
-                HttpStatus.BAD_REQUEST.value(),
-                HttpStatus.BAD_REQUEST.getReasonPhrase(),
-                exception.getMessage(),
-                LocalDateTime.now(),
-                request.getDescription(false).replace("uri=", "")
-        );
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-    }
-
     @ExceptionHandler(ImageEmptyException.class)
     public ResponseEntity<ErrorResponse> handleImageEmptyException(ImageEmptyException exception, WebRequest request) {
         ErrorResponse response = new ErrorResponse(
@@ -131,54 +118,5 @@ public class GlobalExceptionHandler {
                 request.getDescription(false).replace("uri=", "")
         );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-    }
-
-    // REDEMPTION
-    @ExceptionHandler(RedemptionAmountUnderThanZeroException.class)
-    public ResponseEntity<ErrorResponse> handleRedemptionAmountUnderThanZeroException(RedemptionAmountUnderThanZeroException exception, WebRequest request) {
-        ErrorResponse response = new ErrorResponse(
-                HttpStatus.BAD_REQUEST.value(),
-                HttpStatus.BAD_REQUEST.getReasonPhrase(),
-                exception.getMessage(),
-                LocalDateTime.now(),
-                request.getDescription(false).replace("uri=", "")
-        );
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-    }
-
-    @ExceptionHandler(RedemptionNotFoundByIdException.class)
-    public ResponseEntity<ErrorResponse> handleRedemptionNotFoundByIdException(RedemptionNotFoundByIdException exception, WebRequest request) {
-        ErrorResponse response = new ErrorResponse(
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.getReasonPhrase(),
-                exception.getMessage(),
-                LocalDateTime.now(),
-                request.getDescription(false).replace("uri=", "")
-        );
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-    }
-
-    @ExceptionHandler(RedemptionNotFoundByIdRewardException.class)
-    public ResponseEntity<ErrorResponse> handleRedemptionNotFoundByIdRewardException(RedemptionNotFoundByIdRewardException exception, WebRequest request) {
-        ErrorResponse response = new ErrorResponse(
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.getReasonPhrase(),
-                exception.getMessage(),
-                LocalDateTime.now(),
-                request.getDescription(false).replace("uri=", "")
-        );
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-    }
-
-    @ExceptionHandler(RedemptionNotFoundByIdUserException.class)
-    public ResponseEntity<ErrorResponse> handleRedemptionNotFoundByIdUserException(RedemptionNotFoundByIdUserException exception, WebRequest request) {
-        ErrorResponse response = new ErrorResponse(
-                HttpStatus.NOT_FOUND.value(),
-                HttpStatus.NOT_FOUND.getReasonPhrase(),
-                exception.getMessage(),
-                LocalDateTime.now(),
-                request.getDescription(false).replace("uri=", "")
-        );
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 }

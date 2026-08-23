@@ -68,8 +68,16 @@ public class SecurityConfig {
                                 "/api/redemptions",
                                 "/api/redemptions/id/{id}",
                                 "/api/redemptions/user/id/{id}",
-                                "/api/redemptions/reward/id/{id}"
+                                "/api/redemptions/reward/id/{id}",
 
+                                // Submission endpoints
+                                "/api/submission/send",
+                                "/api/submissions",
+                                "/api/submissions/id/{id}",
+                                "/api/submissions/id/user/{id}",
+                                "/api/submissions/id/status/{id}/approve",
+                                "/api/submissions/id/status/{id}/reject",
+                                "/api/submissions/id/delete/{id}"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
