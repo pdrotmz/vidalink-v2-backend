@@ -1,29 +1,29 @@
 package com.vidalink.healthcare.gamification.presentation.controller.pointtransaction;
 
+import com.vidalink.healthcare.gamification.application.dto.request.pointtransaction.RegisterPointTransactionRequest;
+import com.vidalink.healthcare.gamification.application.dto.request.userbadge.AwardBadgeRequest;
+import com.vidalink.healthcare.gamification.application.dto.response.level.UserLevelResponse;
+import com.vidalink.healthcare.gamification.application.dto.response.points.UserPointsResponse;
+import com.vidalink.healthcare.gamification.application.dto.response.pointtransaction.PointTransactionResponse;
+import com.vidalink.healthcare.gamification.application.dto.response.userbadge.UserBadgeResponse;
 import com.vidalink.healthcare.gamification.application.usecase.level.GetUserLevelUseCaseImpl;
 import com.vidalink.healthcare.gamification.application.usecase.points.GetUserPointsUseCase;
 import com.vidalink.healthcare.gamification.application.usecase.pointtransaction.GetUserPointTransactionsUseCase;
 import com.vidalink.healthcare.gamification.application.usecase.pointtransaction.RegisterPointTransactionUseCase;
 import com.vidalink.healthcare.gamification.application.usecase.userbadge.AwardBadgeUseCaseImpl;
 import com.vidalink.healthcare.gamification.application.usecase.userbadge.GetUserBadgesUseCaseImpl;
-import com.vidalink.healthcare.gamification.application.dto.request.userbadge.AwardBadgeRequest;
-import com.vidalink.healthcare.gamification.application.dto.request.pointtransaction.RegisterPointTransactionRequest;
-import com.vidalink.healthcare.gamification.application.dto.response.pointtransaction.PointTransactionResponse;
-import com.vidalink.healthcare.gamification.application.dto.response.userbadge.UserBadgeResponse;
-import com.vidalink.healthcare.gamification.application.dto.response.level.UserLevelResponse;
-import com.vidalink.healthcare.gamification.application.dto.response.points.UserPointsResponse;
 import com.vidalink.healthcare.gamification.domain.enums.badge.Badge;
 import com.vidalink.healthcare.gamification.domain.enums.level.Level;
 import com.vidalink.healthcare.gamification.domain.enums.pointtransaction.PointTransactionSource;
 import com.vidalink.healthcare.gamification.domain.enums.pointtransaction.PointTransactionType;
 import com.vidalink.healthcare.gamification.presentation.controller.PointTransactionController;
-import com.vidalink.healthcare.identity.infrastructure.persistence.jwt.JwtService;
+import com.vidalink.healthcare.marketplace.infrastructure.persistence.jwt.JwtService;
 import com.vidalink.healthcare.shared.infrastructure.security.UserDetailsServiceImpl;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
-import org.springframework.http.MediaType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.ObjectMapper;
@@ -34,9 +34,9 @@ import java.util.UUID;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(PointTransactionController.class)

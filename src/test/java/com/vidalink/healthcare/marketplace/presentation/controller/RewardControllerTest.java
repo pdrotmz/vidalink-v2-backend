@@ -1,7 +1,5 @@
 package com.vidalink.healthcare.marketplace.presentation.controller;
 
-import com.vidalink.healthcare.identity.infrastructure.persistence.jwt.JwtService;
-import com.vidalink.healthcare.shared.infrastructure.security.UserDetailsServiceImpl;
 import com.vidalink.healthcare.marketplace.application.dto.request.reward.CreateRewardRequest;
 import com.vidalink.healthcare.marketplace.application.dto.request.reward.UpdateRewardRequest;
 import com.vidalink.healthcare.marketplace.application.dto.response.reward.RewardResponse;
@@ -9,7 +7,9 @@ import com.vidalink.healthcare.marketplace.application.usecase.reward.*;
 import com.vidalink.healthcare.marketplace.domain.exception.reward.RewardAlreadyExistsByNameException;
 import com.vidalink.healthcare.marketplace.domain.exception.reward.RewardNotFoundByIdException;
 import com.vidalink.healthcare.marketplace.domain.exception.reward.RewardNotFoundByNameException;
+import com.vidalink.healthcare.marketplace.infrastructure.persistence.jwt.JwtService;
 import com.vidalink.healthcare.marketplace.presentation.controller.reward.RewardController;
+import com.vidalink.healthcare.shared.infrastructure.security.UserDetailsServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -24,7 +24,8 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.UUID;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;

@@ -1,7 +1,6 @@
 package com.vidalink.healthcare.marketplace.infrastructure.persistence.adapter.redemption;
 
 import com.vidalink.healthcare.marketplace.domain.model.redemption.Redemption;
-import com.vidalink.healthcare.marketplace.domain.model.reward.Reward;
 import com.vidalink.healthcare.marketplace.infrastructure.persistence.jpa.redemption.JpaRedemptionRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

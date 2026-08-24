@@ -1,4 +1,4 @@
-package com.vidalink.healthcare.identity.infrastructure.persistence.jwt;
+package com.vidalink.healthcare.marketplace.infrastructure.persistence.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;

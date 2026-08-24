@@ -1,7 +1,7 @@
 package com.vidalink.healthcare.gamification.infrastructure.persistence.adapter.userbadge;
 
-import com.vidalink.healthcare.gamification.domain.model.userbadge.UserBadge;
 import com.vidalink.healthcare.gamification.domain.enums.badge.Badge;
+import com.vidalink.healthcare.gamification.domain.model.userbadge.UserBadge;
 import com.vidalink.healthcare.gamification.domain.repository.userbadge.UserBadgeRepository;
 import com.vidalink.healthcare.gamification.infrastructure.persistence.jpa.userbadge.JpaUserBadgeRepository;
 import lombok.RequiredArgsConstructor;

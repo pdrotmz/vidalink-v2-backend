@@ -5,7 +5,6 @@ import com.vidalink.healthcare.identity.application.usecase.RegisterUserUseCase;
 import com.vidalink.healthcare.identity.domain.enums.UserRole;
 import com.vidalink.healthcare.identity.domain.exception.CpfAlreadyExistsException;
 import com.vidalink.healthcare.identity.domain.exception.EmailAlreadyExistsException;
-import com.vidalink.healthcare.identity.domain.exception.UsernameAlreadyExistsException;
 import com.vidalink.healthcare.identity.domain.model.User;
 import com.vidalink.healthcare.identity.domain.repository.UserRepository;
 import org.junit.jupiter.api.Test;

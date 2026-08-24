@@ -1,18 +1,18 @@
 package com.vidalink.healthcare.marketplace.presentation.controller;
 
 import com.vidalink.healthcare.identity.domain.exception.UserNotFoundException;
-import com.vidalink.healthcare.identity.infrastructure.persistence.jwt.JwtService;
-import com.vidalink.healthcare.shared.infrastructure.security.UserDetailsServiceImpl;
 import com.vidalink.healthcare.marketplace.application.dto.request.redemption.CreateRedemptionRequest;
 import com.vidalink.healthcare.marketplace.application.dto.response.redemption.RedemptionResponse;
 import com.vidalink.healthcare.marketplace.application.usecase.redemption.*;
 import com.vidalink.healthcare.marketplace.domain.exception.redemption.*;
+import com.vidalink.healthcare.marketplace.infrastructure.persistence.jwt.JwtService;
 import com.vidalink.healthcare.marketplace.presentation.controller.redemption.RedemptionController;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
-import org.springframework.http.MediaType;
+import com.vidalink.healthcare.shared.infrastructure.security.UserDetailsServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.ObjectMapper;
@@ -24,7 +24,6 @@ import java.util.UUID;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;

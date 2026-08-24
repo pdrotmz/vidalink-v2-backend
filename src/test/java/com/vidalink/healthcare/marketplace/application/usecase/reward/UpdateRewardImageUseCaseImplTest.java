@@ -1,11 +1,11 @@
 package com.vidalink.healthcare.marketplace.application.usecase.reward;
 
 import com.vidalink.healthcare.marketplace.application.dto.response.reward.RewardResponse;
-import com.vidalink.healthcare.shared.application.port.out.FileStorage;
 import com.vidalink.healthcare.marketplace.domain.exception.reward.ImageEmptyException;
 import com.vidalink.healthcare.marketplace.domain.exception.reward.RewardNotFoundByIdException;
 import com.vidalink.healthcare.marketplace.domain.model.reward.Reward;
 import com.vidalink.healthcare.marketplace.domain.repository.reward.RewardRepository;
+import com.vidalink.healthcare.shared.application.port.out.FileStorage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,13 +21,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
-import static org.springframework.http.MediaType.*;
+import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 
 @ExtendWith(MockitoExtension.class)
 public class UpdateRewardImageUseCaseImplTest {

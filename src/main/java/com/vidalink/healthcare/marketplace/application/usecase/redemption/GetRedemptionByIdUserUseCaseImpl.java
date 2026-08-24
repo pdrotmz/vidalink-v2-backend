@@ -1,7 +1,5 @@
 package com.vidalink.healthcare.marketplace.application.usecase.redemption;
 
-import com.vidalink.healthcare.identity.domain.exception.UserNotFoundException;
-import com.vidalink.healthcare.identity.domain.model.User;
 import com.vidalink.healthcare.identity.domain.repository.UserRepository;
 import com.vidalink.healthcare.marketplace.application.dto.response.redemption.RedemptionResponse;
 import com.vidalink.healthcare.marketplace.domain.exception.redemption.RedemptionNotFoundByIdUserException;

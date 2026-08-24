@@ -5,7 +5,6 @@ import com.vidalink.healthcare.assessment.domain.enums.ValidationStatus;
 import com.vidalink.healthcare.assessment.domain.model.Submission;
 import com.vidalink.healthcare.assessment.infrastructure.persistence.adapter.SubmissionRepositoryAdapter;
 import com.vidalink.healthcare.assessment.infrastructure.persistence.jpa.JpaSubmissionRepository;
-import com.vidalink.healthcare.marketplace.domain.model.redemption.Redemption;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

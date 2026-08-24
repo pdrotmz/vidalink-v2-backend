@@ -1,9 +1,9 @@
 package com.vidalink.healthcare.gamification.domain.dto.response.pointtransaction;
 
 import com.vidalink.healthcare.gamification.application.dto.response.pointtransaction.PointTransactionResponse;
-import com.vidalink.healthcare.gamification.domain.model.pointtransaction.PointTransaction;
 import com.vidalink.healthcare.gamification.domain.enums.pointtransaction.PointTransactionSource;
 import com.vidalink.healthcare.gamification.domain.enums.pointtransaction.PointTransactionType;
+import com.vidalink.healthcare.gamification.domain.model.pointtransaction.PointTransaction;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

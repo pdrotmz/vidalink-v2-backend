@@ -1,7 +1,7 @@
 package com.vidalink.healthcare.entity.infrastructure.jwt;
 
 import com.vidalink.healthcare.identity.domain.model.User;
-import com.vidalink.healthcare.identity.infrastructure.persistence.jwt.JwtService;
+import com.vidalink.healthcare.marketplace.infrastructure.persistence.jwt.JwtService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

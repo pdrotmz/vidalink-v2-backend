@@ -1,8 +1,8 @@
 package com.vidalink.healthcare.gamification.application.usecase.pointtransaction;
 
-import com.vidalink.healthcare.gamification.domain.model.pointtransaction.PointTransaction;
 import com.vidalink.healthcare.gamification.domain.enums.pointtransaction.PointTransactionSource;
 import com.vidalink.healthcare.gamification.domain.enums.pointtransaction.PointTransactionType;
+import com.vidalink.healthcare.gamification.domain.model.pointtransaction.PointTransaction;
 import com.vidalink.healthcare.gamification.domain.repository.pointtransaction.PointTransactionRepository;
 import com.vidalink.healthcare.identity.domain.exception.UserNotFoundException;
 import com.vidalink.healthcare.identity.domain.model.User;
