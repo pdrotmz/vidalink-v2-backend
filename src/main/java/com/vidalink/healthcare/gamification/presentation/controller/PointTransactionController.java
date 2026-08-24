@@ -1,0 +1,73 @@
+package com.vidalink.healthcare.gamification.presentation.controller;
+
+import com.vidalink.healthcare.gamification.application.usecase.level.GetUserLevelUseCaseImpl;
+import com.vidalink.healthcare.gamification.application.usecase.points.GetUserPointsUseCase;
+import com.vidalink.healthcare.gamification.application.usecase.pointtransaction.GetUserPointTransactionsUseCase;
+import com.vidalink.healthcare.gamification.application.usecase.pointtransaction.RegisterPointTransactionUseCase;
+import com.vidalink.healthcare.gamification.application.usecase.userbadge.AwardBadgeUseCaseImpl;
+import com.vidalink.healthcare.gamification.application.usecase.userbadge.GetUserBadgesUseCaseImpl;
+import com.vidalink.healthcare.gamification.entity.dto.request.userbadge.AwardBadgeRequest;
+import com.vidalink.healthcare.gamification.entity.dto.request.pointtransaction.RegisterPointTransactionRequest;
+import com.vidalink.healthcare.gamification.entity.dto.response.pointtransaction.PointTransactionResponse;
+import com.vidalink.healthcare.gamification.entity.dto.response.userbadge.UserBadgeResponse;
+import com.vidalink.healthcare.gamification.entity.dto.response.level.UserLevelResponse;
+import com.vidalink.healthcare.gamification.entity.dto.response.points.UserPointsResponse;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/api/points")
+@RequiredArgsConstructor
+public class PointTransactionController {
+
+    private final RegisterPointTransactionUseCase registerPointTransactionUseCase;
+    private final GetUserPointsUseCase getUserPointsUseCase;
+    private final GetUserPointTransactionsUseCase getUserPointTransactionsUseCase;
+    private final GetUserLevelUseCaseImpl getUserLevelUseCase;
+    private final AwardBadgeUseCaseImpl awardBadgeUseCase;
+    private final GetUserBadgesUseCaseImpl getUserBadgesUseCase;
+
+    @PostMapping("/transactions")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void registerPointTransaction(@RequestBody RegisterPointTransactionRequest request) {
+        registerPointTransactionUseCase.execute(
+                request.userId(),
+                request.amount(),
+                request.type(),
+                request.source()
+        );
+    }
+
+    @GetMapping("/{userId}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public UserPointsResponse getUserPoints(@PathVariable UUID userId) {
+        return getUserPointsUseCase.execute(userId);
+    }
+
+    @GetMapping("/{userId}/transactions")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public List<PointTransactionResponse> getUserPointTransactions(@PathVariable UUID userId) {
+        return getUserPointTransactionsUseCase.execute(userId);
+    }
+    @GetMapping("/{userId}/level")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public UserLevelResponse getUserLevel(@PathVariable UUID userId) {
+        return getUserLevelUseCase.execute(userId);
+    }
+    @PostMapping("/{userId}/badges")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void awardBadge(@PathVariable UUID userId, @Valid @RequestBody AwardBadgeRequest request) {
+        awardBadgeUseCase.execute(userId, request.badge());
+    }
+
+    @GetMapping("/{userId}/badges")
+    public List<UserBadgeResponse> getUserBadges(@PathVariable UUID userId) {
+        return getUserBadgesUseCase.execute(userId);
+    }
+
+}
