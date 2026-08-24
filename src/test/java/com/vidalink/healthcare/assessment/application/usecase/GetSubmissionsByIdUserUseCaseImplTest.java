@@ -45,7 +45,7 @@ class GetSubmissionsByIdUserUseCaseImplTest {
         when(userRepository.findById(userId))
                 .thenReturn(Optional.of(user));
 
-        when(submissionRepository.findByUserId(userId))
+        when(submissionRepository.findByIdUser(userId))
                 .thenReturn(List.of(submission1, submission2));
 
         List<Submission> submissions =
@@ -54,7 +54,7 @@ class GetSubmissionsByIdUserUseCaseImplTest {
         assertEquals(2, submissions.size());
 
         verify(userRepository).findById(userId);
-        verify(submissionRepository).findByUserId(userId);
+        verify(submissionRepository).findByIdUser(userId);
     }
 
     @Test

@@ -7,7 +7,6 @@ import com.vidalink.healthcare.assessment.domain.exception.SubmissionFileFormatN
 import com.vidalink.healthcare.assessment.domain.exception.SubmissionNotFoundByIdException;
 import com.vidalink.healthcare.assessment.domain.exception.SubmissionNotSentException;
 import com.vidalink.healthcare.assessment.domain.model.Submission;
-import com.vidalink.healthcare.assessment.presentation.SubmissionController;
 import com.vidalink.healthcare.identity.domain.exception.UserNotFoundException;
 import com.vidalink.healthcare.identity.infrastructure.persistence.jwt.JwtService;
 import com.vidalink.healthcare.shared.infrastructure.security.UserDetailsServiceImpl;

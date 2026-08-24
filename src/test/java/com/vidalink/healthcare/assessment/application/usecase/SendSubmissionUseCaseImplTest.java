@@ -24,8 +24,7 @@ import java.io.InputStream;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
@@ -193,4 +192,41 @@ public class SendSubmissionUseCaseImplTest {
         verify(submissionRepository, never()).save(any(Submission.class));
         verifyNoInteractions(fileStorage);
     }
+
+    @Test
+    void shouldThrowSubmissionNotSentExceptionWhenFileInputStreamFails() throws IOException {
+        String email = "test@email.com";
+        UUID userId = UUID.randomUUID();
+        UUID submissionId = UUID.randomUUID();
+
+        User user = new User();
+        user.setId(userId);
+
+        Submission savedSubmission = new Submission();
+        savedSubmission.setId(submissionId);
+
+        MultipartFile file = mock(MultipartFile.class);
+        when(file.isEmpty()).thenReturn(false);
+        when(file.getContentType()).thenReturn("application/pdf");
+
+        long validSize = DataSize.ofMegabytes(1).toBytes();
+        when(file.getSize()).thenReturn(validSize);
+
+        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+        when(submissionRepository.save(any(Submission.class))).thenReturn(savedSubmission);
+
+        IOException simulatedException = new IOException("Simulated disk error");
+        when(file.getInputStream()).thenThrow(simulatedException);
+
+        SubmissionNotSentException exception = assertThrows(SubmissionNotSentException.class, () -> {
+            useCase.execute(email, file);
+        });
+
+        String expectedMessage = "File could not upload: " + simulatedException;
+        assertEquals(expectedMessage, exception.getMessage());
+
+        verify(userRepository).findByEmail(email);
+        verify(submissionRepository, times(1)).save(any(Submission.class));
+    }
+
 }

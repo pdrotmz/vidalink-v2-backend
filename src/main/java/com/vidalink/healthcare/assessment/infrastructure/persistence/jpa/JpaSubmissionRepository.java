@@ -14,9 +14,9 @@ public interface JpaSubmissionRepository extends JpaRepository<Submission, UUID>
     @Override
     Optional<Submission> findById(UUID id);
 
-    List<Submission> findSubmissionsByIdUser(UUID idUser);
-
     List<SubmissionResponse> findByStatus(ValidationStatus status);
+
+    List<Submission> findByIdUser(UUID idUser);
 
     void deleteById(UUID id);
 }

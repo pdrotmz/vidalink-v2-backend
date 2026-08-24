@@ -1,4 +1,4 @@
-package com.vidalink.healthcare.assessment.presentation;
+package com.vidalink.healthcare.assessment.presentation.controller;
 
 import com.vidalink.healthcare.assessment.application.dto.SubmissionResponse;
 import com.vidalink.healthcare.assessment.application.usecase.*;

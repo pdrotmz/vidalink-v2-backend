@@ -24,6 +24,6 @@ public class GetSubmissionsByIdUserUseCaseImpl implements GetSubmissionsByIdUser
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
 
-        return submissionRepository.findByUserId(user.getId());
+        return submissionRepository.findByIdUser(user.getId());
     }
 }
