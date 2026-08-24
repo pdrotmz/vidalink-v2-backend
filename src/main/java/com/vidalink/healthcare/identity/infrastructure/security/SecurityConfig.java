@@ -77,7 +77,15 @@ public class SecurityConfig {
                                 "/api/submissions/id/user/{id}",
                                 "/api/submissions/id/status/{id}/approve",
                                 "/api/submissions/id/status/{id}/reject",
-                                "/api/submissions/id/delete/{id}"
+                                "/api/submissions/id/delete/{id}",
+
+                                // Gamification endpoints
+                                "/api/points/transactions",
+                                "/api/points/{userId}",
+                                "/api/points/{userId}/level",
+                                "/api/points/{userId}/badges",
+                                "/api/points/{userId}/transactions"
+
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
