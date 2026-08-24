@@ -8,7 +8,7 @@ import com.vidalink.healthcare.assessment.domain.repository.SubmissionRepository
 import com.vidalink.healthcare.identity.domain.exception.UserNotFoundException;
 import com.vidalink.healthcare.identity.domain.model.User;
 import com.vidalink.healthcare.identity.domain.repository.UserRepository;
-import com.vidalink.healthcare.marketplace.application.port.out.FileStorage;
+import com.vidalink.healthcare.shared.application.port.out.FileStorage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

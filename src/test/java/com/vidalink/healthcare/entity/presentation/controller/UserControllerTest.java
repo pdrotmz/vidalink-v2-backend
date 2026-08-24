@@ -4,7 +4,7 @@ import com.vidalink.healthcare.identity.application.dto.response.MeResponse;
 import com.vidalink.healthcare.identity.application.usecase.GetCurrentUserUseCase;
 import com.vidalink.healthcare.identity.domain.enums.UserRole;
 import com.vidalink.healthcare.identity.domain.model.User;
-import com.vidalink.healthcare.identity.infrastructure.security.JwtAuthenticationFilter;
+import com.vidalink.healthcare.shared.infrastructure.security.JwtAuthenticationFilter;
 import com.vidalink.healthcare.identity.presentation.controller.UserController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

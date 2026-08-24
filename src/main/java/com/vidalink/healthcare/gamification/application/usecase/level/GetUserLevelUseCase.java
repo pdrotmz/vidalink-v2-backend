@@ -1,6 +1,6 @@
 package com.vidalink.healthcare.gamification.application.usecase.level;
 
-import com.vidalink.healthcare.gamification.entity.dto.response.level.UserLevelResponse;
+import com.vidalink.healthcare.gamification.application.dto.response.level.UserLevelResponse;
 
 import java.util.UUID;
 

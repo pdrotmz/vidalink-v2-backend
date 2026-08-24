@@ -1,6 +1,6 @@
 package com.vidalink.healthcare.gamification.infrastructure.persistence.jpa.pointtransaction;
 
-import com.vidalink.healthcare.gamification.entity.domain.pointtransaction.PointTransaction;
+import com.vidalink.healthcare.gamification.domain.model.pointtransaction.PointTransaction;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

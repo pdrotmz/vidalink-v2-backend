@@ -2,7 +2,7 @@ package com.vidalink.healthcare.marketplace.presentation.controller;
 
 import com.vidalink.healthcare.identity.domain.exception.UserNotFoundException;
 import com.vidalink.healthcare.identity.infrastructure.persistence.jwt.JwtService;
-import com.vidalink.healthcare.identity.infrastructure.security.UserDetailsServiceImpl;
+import com.vidalink.healthcare.shared.infrastructure.security.UserDetailsServiceImpl;
 import com.vidalink.healthcare.marketplace.application.dto.request.redemption.CreateRedemptionRequest;
 import com.vidalink.healthcare.marketplace.application.dto.response.redemption.RedemptionResponse;
 import com.vidalink.healthcare.marketplace.application.usecase.redemption.*;

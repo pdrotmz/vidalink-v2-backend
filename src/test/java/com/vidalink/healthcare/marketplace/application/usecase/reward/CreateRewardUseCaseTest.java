@@ -2,7 +2,7 @@ package com.vidalink.healthcare.marketplace.application.usecase.reward;
 
 import com.vidalink.healthcare.marketplace.application.dto.request.reward.CreateRewardRequest;
 import com.vidalink.healthcare.marketplace.application.dto.response.reward.RewardResponse;
-import com.vidalink.healthcare.marketplace.application.port.out.FileStorage;
+import com.vidalink.healthcare.shared.application.port.out.FileStorage;
 import com.vidalink.healthcare.marketplace.domain.exception.reward.RewardAlreadyExistsByNameException;
 import com.vidalink.healthcare.marketplace.domain.model.reward.Reward;
 import com.vidalink.healthcare.marketplace.domain.repository.reward.RewardRepository;

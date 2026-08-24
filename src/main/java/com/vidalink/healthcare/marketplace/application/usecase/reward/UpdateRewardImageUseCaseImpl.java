@@ -1,7 +1,7 @@
 package com.vidalink.healthcare.marketplace.application.usecase.reward;
 
 import com.vidalink.healthcare.marketplace.application.dto.response.reward.RewardResponse;
-import com.vidalink.healthcare.marketplace.application.port.out.FileStorage;
+import com.vidalink.healthcare.shared.application.port.out.FileStorage;
 import com.vidalink.healthcare.marketplace.domain.exception.reward.ImageEmptyException;
 import com.vidalink.healthcare.marketplace.domain.exception.reward.RewardNotFoundByIdException;
 import com.vidalink.healthcare.marketplace.domain.model.reward.Reward;

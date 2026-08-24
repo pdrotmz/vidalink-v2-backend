@@ -1,6 +1,6 @@
 package com.vidalink.healthcare.gamification.application.usecase.points;
 
-import com.vidalink.healthcare.gamification.entity.dto.response.points.UserPointsResponse;
+import com.vidalink.healthcare.gamification.application.dto.response.points.UserPointsResponse;
 
 import java.util.UUID;
 

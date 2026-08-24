@@ -1,5 +1,6 @@
 package com.vidalink.healthcare.marketplace.infrastructure.persistence.storage.minio;
 
+import com.vidalink.healthcare.shared.infrastructure.persistence.storage.minio.MinioFileStorage;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import org.junit.jupiter.api.BeforeEach;

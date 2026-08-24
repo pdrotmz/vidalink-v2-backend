@@ -1,7 +1,7 @@
 package com.vidalink.healthcare.gamification.infrastructure.persistence.jpa.userbadge;
 
-import com.vidalink.healthcare.gamification.entity.domain.userbadge.UserBadge;
-import com.vidalink.healthcare.gamification.entity.enums.badge.Badge;
+import com.vidalink.healthcare.gamification.domain.model.userbadge.UserBadge;
+import com.vidalink.healthcare.gamification.domain.enums.badge.Badge;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

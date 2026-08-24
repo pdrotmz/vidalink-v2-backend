@@ -1,7 +1,7 @@
 package com.vidalink.healthcare.gamification.infrastructure.persistence.adapter.pointtransaction;
 
-import com.vidalink.healthcare.gamification.entity.domain.pointtransaction.PointTransaction;
-import com.vidalink.healthcare.gamification.entity.repository.pointtransaction.PointTransactionRepository;
+import com.vidalink.healthcare.gamification.domain.model.pointtransaction.PointTransaction;
+import com.vidalink.healthcare.gamification.domain.repository.pointtransaction.PointTransactionRepository;
 import com.vidalink.healthcare.gamification.infrastructure.persistence.jpa.pointtransaction.JpaPointTransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

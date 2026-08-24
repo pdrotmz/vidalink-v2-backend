@@ -1,7 +1,7 @@
 package com.vidalink.healthcare.marketplace.presentation.controller;
 
 import com.vidalink.healthcare.identity.infrastructure.persistence.jwt.JwtService;
-import com.vidalink.healthcare.identity.infrastructure.security.UserDetailsServiceImpl;
+import com.vidalink.healthcare.shared.infrastructure.security.UserDetailsServiceImpl;
 import com.vidalink.healthcare.marketplace.application.dto.request.reward.CreateRewardRequest;
 import com.vidalink.healthcare.marketplace.application.dto.request.reward.UpdateRewardRequest;
 import com.vidalink.healthcare.marketplace.application.dto.response.reward.RewardResponse;

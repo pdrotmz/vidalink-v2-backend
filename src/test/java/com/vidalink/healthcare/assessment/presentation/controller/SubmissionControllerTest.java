@@ -10,7 +10,7 @@ import com.vidalink.healthcare.assessment.domain.model.Submission;
 import com.vidalink.healthcare.assessment.presentation.SubmissionController;
 import com.vidalink.healthcare.identity.domain.exception.UserNotFoundException;
 import com.vidalink.healthcare.identity.infrastructure.persistence.jwt.JwtService;
-import com.vidalink.healthcare.identity.infrastructure.security.UserDetailsServiceImpl;
+import com.vidalink.healthcare.shared.infrastructure.security.UserDetailsServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
