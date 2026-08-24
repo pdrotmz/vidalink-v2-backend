@@ -16,12 +16,13 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -173,4 +174,32 @@ public class CreateRewardUseCaseTest {
 
         verify(rewardRepository, never()).save(any(Reward.class));
     }
+
+    @Test
+    void shouldThrowRuntimeExceptionWhenImageInputStreamFails() throws IOException {
+
+        UUID id = UUID.randomUUID();
+        CreateRewardRequest request = new CreateRewardRequest("GIFT CARD LOL", "DESCRIPTION TEST", 10);
+
+        MultipartFile image = mock(MultipartFile.class);
+        when(image.isEmpty()).thenReturn(false);
+
+        Reward savedReward = new Reward();
+        savedReward.setId(id);
+
+        when(rewardRepository.existsByName(request.name())).thenReturn(false);
+        when(rewardRepository.save(any(Reward.class))).thenReturn(savedReward);
+
+        when(image.getInputStream()).thenThrow(new IOException("Simulated disk error"));
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            useCase.execute(request, image);
+        });
+
+        assertEquals("Could not upload reward image", exception.getMessage());
+        assertInstanceOf(IOException.class, exception.getCause());
+
+        verify(rewardRepository, times(1)).save(any(Reward.class));
+    }
+
 }

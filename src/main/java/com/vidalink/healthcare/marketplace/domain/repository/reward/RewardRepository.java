@@ -16,8 +16,6 @@ public interface RewardRepository {
 
     boolean existsByName(String name);
 
-    void delete(Reward reward);
-
     List<Reward> findAll();
 
     List<Reward> findByNameContainingIgnoreCase(String name);

@@ -22,10 +22,8 @@ public class GetRedemptionByIdUserUseCaseImpl implements GetRedemptionByIdUserUs
 
     @Override
     public RedemptionResponse execute(UUID id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
 
-        Redemption redemption = redemptionRepository.findByIdUser(user.getId())
+        Redemption redemption = redemptionRepository.findByIdUser(id)
                 .orElseThrow(() -> new RedemptionNotFoundByIdUserException("Redemption not found with id user: " + id));
 
         return RedemptionResponse.from(redemption);

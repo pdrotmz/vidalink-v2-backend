@@ -35,43 +35,32 @@ class GetRedemptionByIdUserUseCaseImplTest {
     @Test
     void shouldReturnRedemptionByUserId() {
 
-        UUID userId = UUID.randomUUID();
 
         User user = new User();
-        user.setId(userId);
 
         Redemption redemption = new Redemption();
         redemption.setId(UUID.randomUUID());
-        redemption.setIdUser(userId);
+        redemption.setIdUser(user.getId());
         redemption.setIdReward(UUID.randomUUID());
         redemption.setAmount(2);
         redemption.setCreatedAt(LocalDateTime.now());
 
-        when(userRepository.findById(userId))
-                .thenReturn(Optional.of(user));
-
-        when(redemptionRepository.findByIdUser(userId))
+        when(redemptionRepository.findByIdUser(user.getId()))
                 .thenReturn(Optional.of(redemption));
 
-        RedemptionResponse response = useCase.execute(userId);
+        RedemptionResponse response = useCase.execute(user.getId());
 
         assertNotNull(response);
-        assertEquals(userId, response.idUser());
+        assertEquals(user.getId(), response.idUser());
 
-        verify(userRepository).findById(userId);
-        verify(redemptionRepository).findByIdUser(userId);
+
+        verify(redemptionRepository).findByIdUser(user.getId());
     }
 
     @Test
     void shouldThrowExceptionWhenRedemptionByUserIdDoesNotExist() {
 
         UUID userId = UUID.randomUUID();
-
-        User user = new User();
-        user.setId(userId);
-
-        when(userRepository.findById(userId))
-                .thenReturn(Optional.of(user));
 
         when(redemptionRepository.findByIdUser(userId))
                 .thenReturn(Optional.empty());
@@ -81,7 +70,6 @@ class GetRedemptionByIdUserUseCaseImplTest {
                 () -> useCase.execute(userId)
         );
 
-        verify(userRepository).findById(userId);
         verify(redemptionRepository).findByIdUser(userId);
     }
 }
