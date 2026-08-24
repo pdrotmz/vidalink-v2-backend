@@ -1,4 +1,4 @@
-package com.vidalink.healthcare.identity.infrastructure.security;
+package com.vidalink.healthcare.shared.infrastructure.security;
 
 import com.vidalink.healthcare.identity.infrastructure.persistence.jwt.JwtService;
 import com.vidalink.healthcare.shared.infrastructure.security.JwtAuthenticationFilter;
