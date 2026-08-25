@@ -9,6 +9,7 @@ public record RewardResponse(
         String name,
         String description,
         int stock,
+        int pointCost,
         String image,
         boolean isActive
 ) {
@@ -19,6 +20,7 @@ public record RewardResponse(
                 reward.getName(),
                 reward.getDescription(),
                 reward.getStock(),
+                reward.getPointsCost(),
                 reward.getImagePath(),
                 reward.isActive()
         );

@@ -12,9 +12,11 @@ import com.vidalink.healthcare.gamification.application.usecase.pointtransaction
 import com.vidalink.healthcare.gamification.application.usecase.pointtransaction.RegisterPointTransactionUseCase;
 import com.vidalink.healthcare.gamification.application.usecase.userbadge.AwardBadgeUseCaseImpl;
 import com.vidalink.healthcare.gamification.application.usecase.userbadge.GetUserBadgesUseCaseImpl;
+import com.vidalink.healthcare.identity.domain.model.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,21 +45,21 @@ public class PointTransactionController {
         );
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/me")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public UserPointsResponse getUserPoints(@PathVariable UUID userId) {
-        return getUserPointsUseCase.execute(userId);
+    public UserPointsResponse getUserPoints(@AuthenticationPrincipal User user) {
+        return getUserPointsUseCase.execute(user.getId());
     }
 
-    @GetMapping("/{userId}/transactions")
+    @GetMapping("/me/transactions")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public List<PointTransactionResponse> getUserPointTransactions(@PathVariable UUID userId) {
-        return getUserPointTransactionsUseCase.execute(userId);
+    public List<PointTransactionResponse> getUserPointTransactions(@AuthenticationPrincipal User user) {
+        return getUserPointTransactionsUseCase.execute(user.getId());
     }
-    @GetMapping("/{userId}/level")
+    @GetMapping("/me/level")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public UserLevelResponse getUserLevel(@PathVariable UUID userId) {
-        return getUserLevelUseCase.execute(userId);
+    public UserLevelResponse getUserLevel(@AuthenticationPrincipal User user) {
+        return getUserLevelUseCase.execute(user.getId());
     }
     @PostMapping("/{userId}/badges")
     @ResponseStatus(HttpStatus.CREATED)
@@ -65,9 +67,10 @@ public class PointTransactionController {
         awardBadgeUseCase.execute(userId, request.badge());
     }
 
-    @GetMapping("/{userId}/badges")
-    public List<UserBadgeResponse> getUserBadges(@PathVariable UUID userId) {
-        return getUserBadgesUseCase.execute(userId);
+    @GetMapping("/me/badges")
+    @ResponseStatus(HttpStatus.OK)
+    public List<UserBadgeResponse> getUserBadges(@AuthenticationPrincipal User user) {
+        return getUserBadgesUseCase.execute(user.getId());
     }
 
 }

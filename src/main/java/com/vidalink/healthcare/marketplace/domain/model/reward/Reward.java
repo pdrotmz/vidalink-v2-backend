@@ -23,6 +23,9 @@ public class Reward {
     @Column(name = "stock", nullable = false, updatable = true)
     private int stock;
 
+    @Column(nullable = false)
+    private int pointsCost;
+
     @Column(name = "image_path")
     private String imagePath;
 

@@ -29,6 +29,7 @@ public class CreateRewardUseCaseImpl {
 
         reward.setName(request.name());
         reward.setDescription(request.description());
+        reward.setPointsCost(request.pointCost());
         reward.setStock(request.stock());
         reward.setActive(true);
 

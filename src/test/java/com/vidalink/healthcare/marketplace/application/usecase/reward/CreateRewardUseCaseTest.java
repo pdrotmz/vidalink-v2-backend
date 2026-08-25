@@ -46,6 +46,7 @@ public class CreateRewardUseCaseTest {
         CreateRewardRequest request = new CreateRewardRequest(
                 "GIFT CARD LOL",
                 "Description Test",
+                100,
                 100
         );
 
@@ -91,6 +92,7 @@ public class CreateRewardUseCaseTest {
         CreateRewardRequest request = new CreateRewardRequest(
                 "Reward",
                 "Description",
+                100,
                 100
         );
 
@@ -116,6 +118,7 @@ public class CreateRewardUseCaseTest {
         CreateRewardRequest request = new CreateRewardRequest(
                 "Reward",
                 "Description",
+                100,
                 100
         );
 
@@ -158,6 +161,7 @@ public class CreateRewardUseCaseTest {
         CreateRewardRequest request = new CreateRewardRequest(
                 "GIFT CARD LOL",
                 "Description Test",
+                100,
                 100
         );
 
@@ -179,7 +183,7 @@ public class CreateRewardUseCaseTest {
     void shouldThrowRuntimeExceptionWhenImageInputStreamFails() throws IOException {
 
         UUID id = UUID.randomUUID();
-        CreateRewardRequest request = new CreateRewardRequest("GIFT CARD LOL", "DESCRIPTION TEST", 10);
+        CreateRewardRequest request = new CreateRewardRequest("GIFT CARD LOL", "DESCRIPTION TEST", 10, 100);
 
         MultipartFile image = mock(MultipartFile.class);
         when(image.isEmpty()).thenReturn(false);

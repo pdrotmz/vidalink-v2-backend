@@ -82,9 +82,7 @@ public class RewardController {
         return ResponseEntity.accepted().body(response);
     }
 
-    @PatchMapping(
-            value = "/id/{id}/image",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PatchMapping(value = "/id/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseEntity<RewardResponse> updateImage(@PathVariable UUID id, @RequestPart("image") MultipartFile image) {
         RewardResponse response = updateRewardImageUseCase.execute(id, image);

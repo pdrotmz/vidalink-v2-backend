@@ -42,7 +42,7 @@ class GetRedemptionByIdUserUseCaseImplTest {
         redemption.setId(UUID.randomUUID());
         redemption.setIdUser(user.getId());
         redemption.setIdReward(UUID.randomUUID());
-        redemption.setAmount(2);
+        redemption.setQuantity(2);
         redemption.setCreatedAt(LocalDateTime.now());
 
         when(redemptionRepository.findByIdUser(user.getId()))

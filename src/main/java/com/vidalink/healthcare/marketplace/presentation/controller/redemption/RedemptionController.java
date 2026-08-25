@@ -1,5 +1,6 @@
 package com.vidalink.healthcare.marketplace.presentation.controller.redemption;
 
+import com.vidalink.healthcare.identity.domain.model.User;
 import com.vidalink.healthcare.marketplace.application.dto.request.redemption.CreateRedemptionRequest;
 import com.vidalink.healthcare.marketplace.application.dto.response.redemption.RedemptionResponse;
 import com.vidalink.healthcare.marketplace.application.usecase.redemption.*;
@@ -7,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,8 +27,8 @@ public class RedemptionController {
 
     @PostMapping("/redeem")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseEntity<RedemptionResponse> redeem(@RequestBody @Valid CreateRedemptionRequest request) {
-        RedemptionResponse response = createRedemptionUseCase.execute(request);
+    public ResponseEntity<RedemptionResponse> redeem(@AuthenticationPrincipal User user, @RequestBody @Valid CreateRedemptionRequest request) {
+        RedemptionResponse response = createRedemptionUseCase.execute(user.getId(), request);
         return ResponseEntity.accepted().body(response);
     }
 
@@ -41,20 +43,20 @@ public class RedemptionController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseEntity<RedemptionResponse> getById(@PathVariable UUID id) {
         RedemptionResponse response = getRedemptionByIdUseCase.execute(id);
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.accepted().body(response);
     }
 
     @GetMapping("/user/id/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseEntity<RedemptionResponse> getByIdUser(@PathVariable UUID id) {
         RedemptionResponse response = getRedemptionByIdUserUseCase.execute(id);
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.accepted().body(response);
     }
 
     @GetMapping("/reward/id/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseEntity<RedemptionResponse> getByIdReward(@PathVariable UUID id) {
         RedemptionResponse response = getRedemptionByIdRewardUseCase.execute(id);
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.accepted().body(response);
     }
 }

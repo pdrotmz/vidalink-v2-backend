@@ -43,50 +43,74 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(
                                 SessionCreationPolicy.STATELESS
                         ))
-                .authorizeHttpRequests(auth ->
-                        auth.requestMatchers(
+                .authorizeHttpRequests(auth -> auth
 
-                                // Auth endpoints
+                        // PUBLIC
+                        .requestMatchers(
                                 "/api/auth/register",
                                 "/api/auth/login",
-                                "/api/users/me",
 
-                                // H2 endpoints
-                                "/h2-console/**",
+                                "/h2-console/**"
+                        ).permitAll()
 
-                                // Reward endpoints
+                        // ADMIN - Rewards
+                        .requestMatchers(
                                 "/api/rewards/create",
-                                "/api/rewards",
+                                "/api/rewards/update/{id}",
+                                "/api/rewards/id/{id}/deactivate"
+                        ).hasRole("ADMIN")
+
+                        // AUTHENTICATED - Rewards
+                        .requestMatchers(
+                                "/api/rewards/",
                                 "/api/rewards/id/{id}",
                                 "/api/rewards/name/{name}",
-                                "/api/rewards/search",
-                                "/api/rewards/update/{id}",
-                                "/api/rewards/id/{id}/deactivate",
+                                "/api/rewards/search"
+                        ).authenticated()
 
-                                // Redemption endpoints
+                        // AUTHENTICATED - Redemptions
+                        .requestMatchers(
                                 "/api/redemptions/redeem",
                                 "/api/redemptions",
                                 "/api/redemptions/id/{id}",
                                 "/api/redemptions/user/id/{id}",
-                                "/api/redemptions/reward/id/{id}",
+                                "/api/redemptions/reward/id/{id}"
+                        ).authenticated()
 
-                                // Submission endpoints
+                        // AUTHENTICATED - Submissions
+                        .requestMatchers(
                                 "/api/submission/send",
                                 "/api/submissions",
                                 "/api/submissions/id/{id}",
-                                "/api/submissions/id/user/{id}",
+                                "/api/submissions/id/user/{id}"
+                        ).authenticated()
+
+                        // ADMIN - Submission management
+                        .requestMatchers(
                                 "/api/submissions/id/status/{id}/approve",
                                 "/api/submissions/id/status/{id}/reject",
-                                "/api/submissions/id/delete/{id}",
+                                "/api/submissions/id/delete/{id}"
+                        ).hasRole("ADMIN")
 
-                                // Gamification endpoints
-                                "/api/points/transactions",
-                                "/api/points/{userId}",
-                                "/api/points/{userId}/level",
+                        // AUTHENTICATED - User
+                        .requestMatchers(
+                                "/api/users/me"
+                        ).authenticated()
+
+                        // AUTHENTICATED - Gamification
+                        .requestMatchers(
+                                "/api/points/me",
+                                "/api/points/me/level",
+                                "/api/points/me/badges",
                                 "/api/points/{userId}/badges",
-                                "/api/points/{userId}/transactions"
+                                "/api/points/me/transactions"
+                        ).authenticated()
 
-                        ).permitAll()
+                        // ADMIN - Gamification management
+                        .requestMatchers(
+                                "/api/points/transactions"
+                        ).hasRole("ADMIN")
+
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider)

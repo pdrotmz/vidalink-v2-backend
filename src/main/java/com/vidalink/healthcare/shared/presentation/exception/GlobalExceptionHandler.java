@@ -174,8 +174,8 @@ public class GlobalExceptionHandler {
     }
 
     // REDEMPTION
-    @ExceptionHandler(RedemptionAmountUnderThanZeroException.class)
-    public ResponseEntity<ErrorResponse> handleRedemptionAmountUnderThanZeroException(RedemptionAmountUnderThanZeroException exception, WebRequest request) {
+    @ExceptionHandler(RedemptionQuanityUnderThanZeroException.class)
+    public ResponseEntity<ErrorResponse> handleRedemptionQuantityUnderThanZeroException(RedemptionQuanityUnderThanZeroException exception, WebRequest request) {
         ErrorResponse response = new ErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
                 HttpStatus.BAD_REQUEST.getReasonPhrase(),

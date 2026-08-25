@@ -9,7 +9,7 @@ public record RedemptionResponse(
         UUID id,
         UUID idUser,
         UUID idReward,
-        int amount,
+        int quantity,
         LocalDateTime createdAt
 ) {
 
@@ -18,7 +18,7 @@ public record RedemptionResponse(
                 redemption.getId(),
                 redemption.getIdUser(),
                 redemption.getIdReward(),
-                redemption.getAmount(),
+                redemption.getQuantity(),
                 redemption.getCreatedAt()
         );
     }

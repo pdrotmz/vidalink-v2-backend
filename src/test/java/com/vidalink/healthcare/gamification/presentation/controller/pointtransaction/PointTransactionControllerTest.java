@@ -17,16 +17,18 @@ import com.vidalink.healthcare.gamification.domain.enums.level.Level;
 import com.vidalink.healthcare.gamification.domain.enums.pointtransaction.PointTransactionSource;
 import com.vidalink.healthcare.gamification.domain.enums.pointtransaction.PointTransactionType;
 import com.vidalink.healthcare.gamification.presentation.controller.PointTransactionController;
+import com.vidalink.healthcare.identity.domain.model.User;
 import com.vidalink.healthcare.marketplace.infrastructure.persistence.jwt.JwtService;
 import com.vidalink.healthcare.shared.infrastructure.security.UserDetailsServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import tools.jackson.databind.ObjectMapper;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -34,23 +36,23 @@ import java.util.UUID;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(PointTransactionController.class)
-@AutoConfigureMockMvc(addFilters = false)
 class PointTransactionControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockitoBean
-    JwtService jwtService;
+    private JwtService jwtService;
 
     @MockitoBean
-    UserDetailsServiceImpl userDetailsService;
+    private UserDetailsServiceImpl userDetailsService;
 
     @MockitoBean
     private RegisterPointTransactionUseCase registerPointTransactionUseCase;
@@ -75,6 +77,7 @@ class PointTransactionControllerTest {
 
     @Test
     void shouldRegisterPointTransaction() throws Exception {
+
         UUID userId = UUID.randomUUID();
 
         RegisterPointTransactionRequest request =
@@ -85,9 +88,15 @@ class PointTransactionControllerTest {
                         PointTransactionSource.ASSESSMENT
                 );
 
-        mockMvc.perform(post("/api/points/transactions")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
+        mockMvc.perform(
+                        post("/api/points/transactions")
+                                .with(authenticatedAdmin(UUID.randomUUID()))
+                                .with(csrf())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(
+                                        objectMapper.writeValueAsString(request)
+                                )
+                )
                 .andExpect(status().isCreated());
 
         verify(registerPointTransactionUseCase).execute(
@@ -100,24 +109,34 @@ class PointTransactionControllerTest {
 
     @Test
     void shouldReturnUserPoints() throws Exception {
+
         UUID userId = UUID.randomUUID();
 
         UserPointsResponse response =
-                new UserPointsResponse(userId, 100);
+                new UserPointsResponse(
+                        userId,
+                        100
+                );
 
         when(getUserPointsUseCase.execute(userId))
                 .thenReturn(response);
 
-        mockMvc.perform(get("/api/points/{userId}", userId))
+        mockMvc.perform(
+                        get("/api/points/me")
+                                .with(authenticatedUser(userId))
+                )
                 .andExpect(status().isAccepted())
-                .andExpect(jsonPath("$.userId").value(userId.toString()))
-                .andExpect(jsonPath("$.balance").value(100));
+                .andExpect(jsonPath("$.userId")
+                        .value(userId.toString()))
+                .andExpect(jsonPath("$.balance")
+                        .value(100));
 
         verify(getUserPointsUseCase).execute(userId);
     }
 
     @Test
     void shouldReturnUserPointTransactions() throws Exception {
+
         UUID userId = UUID.randomUUID();
 
         PointTransactionResponse response =
@@ -133,10 +152,10 @@ class PointTransactionControllerTest {
         when(getUserPointTransactionsUseCase.execute(userId))
                 .thenReturn(List.of(response));
 
-        mockMvc.perform(get(
-                        "/api/points/{userId}/transactions",
-                        userId
-                ))
+        mockMvc.perform(
+                        get("/api/points/me/transactions")
+                                .with(authenticatedUser(userId))
+                )
                 .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$[0].userId")
                         .value(userId.toString()))
@@ -153,6 +172,7 @@ class PointTransactionControllerTest {
 
     @Test
     void shouldReturnUserLevel() throws Exception {
+
         UUID userId = UUID.randomUUID();
 
         UserLevelResponse response =
@@ -165,17 +185,24 @@ class PointTransactionControllerTest {
         when(getUserLevelUseCase.execute(userId))
                 .thenReturn(response);
 
-        mockMvc.perform(get("/api/points/{userId}/level", userId))
+        mockMvc.perform(
+                        get("/api/points/me/level")
+                                .with(authenticatedUser(userId))
+                )
                 .andExpect(status().isAccepted())
-                .andExpect(jsonPath("$.userId").value(userId.toString()))
-                .andExpect(jsonPath("$.level").value("ADVANCED"))
-                .andExpect(jsonPath("$.totalPoints").value(1500));
+                .andExpect(jsonPath("$.userId")
+                        .value(userId.toString()))
+                .andExpect(jsonPath("$.level")
+                        .value("ADVANCED"))
+                .andExpect(jsonPath("$.totalPoints")
+                        .value(1500));
 
         verify(getUserLevelUseCase).execute(userId);
     }
 
     @Test
     void shouldAwardBadge() throws Exception {
+
         UUID userId = UUID.randomUUID();
 
         AwardBadgeRequest request =
@@ -185,6 +212,8 @@ class PointTransactionControllerTest {
 
         mockMvc.perform(
                         post("/api/points/{userId}/badges", userId)
+                                .with(authenticatedAdmin(userId))
+                                .with(csrf())
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(
                                         objectMapper.writeValueAsString(request)
@@ -200,6 +229,7 @@ class PointTransactionControllerTest {
 
     @Test
     void shouldReturnUserBadges() throws Exception {
+
         UUID userId = UUID.randomUUID();
 
         UserBadgeResponse firstBadge =
@@ -219,10 +249,14 @@ class PointTransactionControllerTest {
                 );
 
         when(getUserBadgesUseCase.execute(userId))
-                .thenReturn(List.of(firstBadge, secondBadge));
+                .thenReturn(List.of(
+                        firstBadge,
+                        secondBadge
+                ));
 
         mockMvc.perform(
-                        get("/api/points/{userId}/badges", userId)
+                        get("/api/points/me/badges")
+                                .with(authenticatedAdmin(userId))
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray())
@@ -233,5 +267,37 @@ class PointTransactionControllerTest {
                         .value("CONTRIBUTOR"));
 
         verify(getUserBadgesUseCase).execute(userId);
+    }
+
+    private RequestPostProcessor authenticatedUser(UUID userId) {
+
+        User user = new User();
+        user.setId(userId);
+        user.setEmail("user@test.com");
+        user.setPassword("123456");
+
+        return authentication(
+                new UsernamePasswordAuthenticationToken(
+                        user,
+                        null,
+                        user.getAuthorities()
+                )
+        );
+    }
+
+    private RequestPostProcessor authenticatedAdmin(UUID userId) {
+
+        User admin = new User();
+        admin.setId(userId);
+        admin.setEmail("admin@vidalink.com");
+        admin.setPassword("123456");
+
+        return authentication(
+                new UsernamePasswordAuthenticationToken(
+                        admin,
+                        null,
+                        admin.getAuthorities()
+                )
+        );
     }
 }
