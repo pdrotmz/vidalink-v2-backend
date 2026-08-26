@@ -7,9 +7,9 @@ import com.vidalink.healthcare.gamification.application.dto.response.points.User
 import com.vidalink.healthcare.gamification.application.dto.response.pointtransaction.PointTransactionResponse;
 import com.vidalink.healthcare.gamification.application.dto.response.userbadge.UserBadgeResponse;
 import com.vidalink.healthcare.gamification.application.usecase.level.GetUserLevelUseCaseImpl;
-import com.vidalink.healthcare.gamification.application.usecase.points.GetUserPointsUseCase;
-import com.vidalink.healthcare.gamification.application.usecase.pointtransaction.GetUserPointTransactionsUseCase;
-import com.vidalink.healthcare.gamification.application.usecase.pointtransaction.RegisterPointTransactionUseCase;
+import com.vidalink.healthcare.gamification.application.usecase.points.GetUserPointsUseCaseImpl;
+import com.vidalink.healthcare.gamification.application.usecase.pointtransaction.GetUserPointTransactionsUseCaseImpl;
+import com.vidalink.healthcare.gamification.application.usecase.pointtransaction.RegisterPointTransactionUseCaseImpl;
 import com.vidalink.healthcare.gamification.application.usecase.userbadge.AwardBadgeUseCaseImpl;
 import com.vidalink.healthcare.gamification.application.usecase.userbadge.GetUserBadgesUseCaseImpl;
 import com.vidalink.healthcare.gamification.domain.enums.badge.Badge;
@@ -24,11 +24,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import tools.jackson.databind.ObjectMapper;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,7 +36,8 @@ import java.util.UUID;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -55,13 +56,13 @@ class PointTransactionControllerTest {
     private UserDetailsServiceImpl userDetailsService;
 
     @MockitoBean
-    private RegisterPointTransactionUseCase registerPointTransactionUseCase;
+    private RegisterPointTransactionUseCaseImpl registerPointTransactionUseCase;
 
     @MockitoBean
-    private GetUserPointsUseCase getUserPointsUseCase;
+    private GetUserPointsUseCaseImpl getUserPointsUseCase;
 
     @MockitoBean
-    private GetUserPointTransactionsUseCase getUserPointTransactionsUseCase;
+    private GetUserPointTransactionsUseCaseImpl getUserPointTransactionsUseCase;
 
     @MockitoBean
     private GetUserLevelUseCaseImpl getUserLevelUseCase;
