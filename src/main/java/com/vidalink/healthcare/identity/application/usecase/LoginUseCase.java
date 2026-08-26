@@ -4,7 +4,7 @@ import com.vidalink.healthcare.identity.application.dto.request.LoginRequest;
 import com.vidalink.healthcare.identity.application.dto.response.LoginResponse;
 import com.vidalink.healthcare.identity.domain.exception.InvalidCredentialsException;
 import com.vidalink.healthcare.identity.domain.model.User;
-import com.vidalink.healthcare.identity.infrastructure.persistence.jwt.JwtService;
+import com.vidalink.healthcare.marketplace.infrastructure.persistence.jwt.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
