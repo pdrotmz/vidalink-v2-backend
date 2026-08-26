@@ -3,7 +3,7 @@ package com.vidalink.healthcare.shared.presentation.exception;
 import com.vidalink.healthcare.assessment.domain.exception.SubmissionFileFormatNotAcceptedException;
 import com.vidalink.healthcare.assessment.domain.exception.SubmissionNotFoundByIdException;
 import com.vidalink.healthcare.assessment.domain.exception.SubmissionNotSentException;
-import com.vidalink.healthcare.identity.application.dto.response.ErrorResponse;
+import com.vidalink.healthcare.shared.application.dto.response.ErrorResponse;
 import com.vidalink.healthcare.identity.domain.exception.CpfAlreadyExistsException;
 import com.vidalink.healthcare.identity.domain.exception.EmailAlreadyExistsException;
 import com.vidalink.healthcare.identity.domain.exception.InvalidCredentialsException;

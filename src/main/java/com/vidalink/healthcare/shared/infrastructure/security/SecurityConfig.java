@@ -50,7 +50,11 @@ public class SecurityConfig {
                                 "/api/auth/register",
                                 "/api/auth/login",
 
-                                "/h2-console/**"
+                                "/h2-console/**",
+
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html"
                         ).permitAll()
 
                         // ADMIN - Rewards
