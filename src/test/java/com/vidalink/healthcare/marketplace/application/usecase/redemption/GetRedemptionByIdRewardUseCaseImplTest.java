@@ -1,7 +1,7 @@
 package com.vidalink.healthcare.marketplace.application.usecase.redemption;
 
 import com.vidalink.healthcare.marketplace.application.dto.response.redemption.RedemptionResponse;
-import com.vidalink.healthcare.marketplace.domain.exception.redemption.RedemptionNotFoundByIdException;
+import com.vidalink.healthcare.marketplace.domain.exception.redemption.RedemptionNotFoundByIdRewardException;
 import com.vidalink.healthcare.marketplace.domain.model.redemption.Redemption;
 import com.vidalink.healthcare.marketplace.domain.repository.redemption.RedemptionRepository;
 import org.junit.jupiter.api.Test;
@@ -36,7 +36,7 @@ class GetRedemptionByIdRewardUseCaseImplTest {
         redemption.setId(UUID.randomUUID());
         redemption.setIdUser(UUID.randomUUID());
         redemption.setIdReward(rewardId);
-        redemption.setAmount(2);
+        redemption.setQuantity(2);
         redemption.setCreatedAt(LocalDateTime.now());
 
         when(repository.findByIdReward(rewardId))
@@ -59,7 +59,7 @@ class GetRedemptionByIdRewardUseCaseImplTest {
                 .thenReturn(Optional.empty());
 
         assertThrows(
-                RedemptionNotFoundByIdException.class,
+                RedemptionNotFoundByIdRewardException.class,
                 () -> useCase.execute(rewardId)
         );
 

@@ -4,6 +4,12 @@ import com.vidalink.healthcare.marketplace.application.dto.request.reward.Create
 import com.vidalink.healthcare.marketplace.application.dto.request.reward.UpdateRewardRequest;
 import com.vidalink.healthcare.marketplace.application.dto.response.reward.RewardResponse;
 import com.vidalink.healthcare.marketplace.application.usecase.reward.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +22,11 @@ import java.util.List;
 
 import java.util.UUID;
 
+@Tag(
+        name = "Marketplace - Reward",
+        description = "Endpoints to reward management"
+)
+@SecurityRequirement(name = "bearerAuth")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/rewards")
@@ -30,6 +41,11 @@ public class RewardController {
     private final UpdateRewardUseCaseImpl updateRewardUseCase;
     private final UpdateRewardImageUseCaseImpl updateRewardImageUseCase;
 
+    @Operation(summary = "Register a reward", description = "Creates a reward")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Register a reward"),
+            @ApiResponse(responseCode = "400", description = "Redemption has a bad request")
+    })
     @PostMapping(
             value = "/create",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -40,6 +56,8 @@ public class RewardController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdReward);
     }
 
+    @Operation(summary = "Get all rewards", description = "Admin get all rewards")
+    @ApiResponse(responseCode = "200", description = "Return all rewards")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<RewardResponse>> getAll() {
@@ -47,46 +65,86 @@ public class RewardController {
         return ResponseEntity.ok().body(rewards);
     }
 
+    @Operation(summary = "Get reward by ID", description = "Get a specific reward info by ID.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "202", description = "Reward info successfully returned by ID"),
+            @ApiResponse(responseCode = "404", description = "Reward with this ID was not found")
+    })
     @GetMapping("/id/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseEntity<RewardResponse> getById(@PathVariable("id") @Valid UUID id) {
+    public ResponseEntity<RewardResponse> getById(
+            @Parameter(description = "Unique identifier of the reward.", required = true)
+            @PathVariable("id") @Valid UUID id) {
         RewardResponse rewardId = getRewardByIdUseCase.execute(id);
         return ResponseEntity.accepted().body(rewardId);
     }
 
+    @Operation(summary = "Get reward by name", description = "Get a specific reward info by name.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "202", description = "reward info successfully returned by name"),
+            @ApiResponse(responseCode = "404", description = "reward with this name was not found")
+    })
     @GetMapping("/name/{name}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseEntity<RewardResponse> getByName(@PathVariable("name") @Valid String name) {
+    public ResponseEntity<RewardResponse> getByName(
+            @Parameter(description = "Identifier name of reward", required = true)
+            @PathVariable("name") @Valid String name) {
         RewardResponse rewardName = getRewardByNameUseCase.execute(name);
         return ResponseEntity.accepted().body(rewardName);
     }
 
+    @Operation(summary = "Get reward by name ignore case", description = "Gets a list of rewards by ignore case")
+    @ApiResponses({
+            @ApiResponse(responseCode = "202", description = "Reward info successfully returned by ID"),
+            @ApiResponse(responseCode = "404", description = "reward with this ID was not found")
+    })
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseEntity<List<RewardResponse>> getAllSearch(@RequestParam(value = "keyword", required = false) String name) {
+    public ResponseEntity<List<RewardResponse>> getAllSearch(
+            @Parameter(description = "Type anything to search", required = false)
+            @RequestParam(value = "keyword", required = false) String name) {
         List<RewardResponse> rewards = getAllRewardsByNameIgnoreCaseUseCase.execute(name);
         return ResponseEntity.accepted().body(rewards);
     }
 
+    @Operation(summary = "Delete reward by ID", description = "Get a specific reward info by ID and delete it")
+    @ApiResponses({
+            @ApiResponse(responseCode = "202", description = "Reward successfully deleted by ID"),
+            @ApiResponse(responseCode = "404", description = "Reward with this ID was not found")
+    })
     @PatchMapping("/id/{id}/deactivate")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> deactivate(@PathVariable @Valid UUID id) {
+    public ResponseEntity<Void> deactivate(
+            @Parameter(description = "Unique identifier of the reward.", required = true)
+            @PathVariable @Valid UUID id) {
         deactivateRewardUseCase.execute(id);
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Update reward by ID", description = "Get a specific reward by ID and update its info")
+    @ApiResponses({
+            @ApiResponse(responseCode = "202", description = "Reward info successfully updated by ID"),
+            @ApiResponse(responseCode = "404", description = "Reward with this ID was not found")
+    })
     @PatchMapping("/update/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseEntity<RewardResponse> update(@PathVariable UUID id, @RequestBody @Valid UpdateRewardRequest  request) {
+    public ResponseEntity<RewardResponse> update(
+            @Parameter(description = "Unique identifier of the reward.", required = true)
+            @PathVariable UUID id, @RequestBody @Valid UpdateRewardRequest  request) {
         RewardResponse response = updateRewardUseCase.execute(id, request);
         return ResponseEntity.accepted().body(response);
     }
 
-    @PatchMapping(
-            value = "/id/{id}/image",
-            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "Update reward image by ID", description = "Get a specific reward by ID and upload reward image")
+    @ApiResponses({
+            @ApiResponse(responseCode = "202", description = "Reward image successfully updated by ID"),
+            @ApiResponse(responseCode = "404", description = "Reward with this ID was not found")
+    })
+    @PatchMapping(value = "/id/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public ResponseEntity<RewardResponse> updateImage(@PathVariable UUID id, @RequestPart("image") MultipartFile image) {
+    public ResponseEntity<RewardResponse> updateImage(
+            @Parameter(description = "Unique identifier of the reward.", required = true)
+            @PathVariable UUID id, @RequestPart("image") MultipartFile image) {
         RewardResponse response = updateRewardImageUseCase.execute(id, image);
 
         return ResponseEntity.accepted().body(response);

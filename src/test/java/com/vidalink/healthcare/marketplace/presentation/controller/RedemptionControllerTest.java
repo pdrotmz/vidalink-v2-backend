@@ -1,20 +1,21 @@
 package com.vidalink.healthcare.marketplace.presentation.controller;
 
-import com.vidalink.healthcare.identity.domain.exception.UserNotFoundException;
-import com.vidalink.healthcare.identity.infrastructure.persistence.jwt.JwtService;
-import com.vidalink.healthcare.identity.infrastructure.security.UserDetailsServiceImpl;
+import com.vidalink.healthcare.identity.domain.model.User;
 import com.vidalink.healthcare.marketplace.application.dto.request.redemption.CreateRedemptionRequest;
 import com.vidalink.healthcare.marketplace.application.dto.response.redemption.RedemptionResponse;
 import com.vidalink.healthcare.marketplace.application.usecase.redemption.*;
 import com.vidalink.healthcare.marketplace.domain.exception.redemption.*;
+import com.vidalink.healthcare.marketplace.infrastructure.persistence.jwt.JwtService;
 import com.vidalink.healthcare.marketplace.presentation.controller.redemption.RedemptionController;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
-import org.springframework.http.MediaType;
+import com.vidalink.healthcare.shared.infrastructure.security.UserDetailsServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import tools.jackson.databind.ObjectMapper;
 
 import java.time.LocalDateTime;
@@ -22,16 +23,16 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(RedemptionController.class)
-@AutoConfigureMockMvc(addFilters = false)
 class RedemptionControllerTest {
 
     @Autowired
@@ -61,6 +62,7 @@ class RedemptionControllerTest {
     @MockitoBean
     private GetRedemptionByIdRewardUseCaseImpl getRedemptionByIdRewardUseCase;
 
+
     @Test
     void shouldCreateRedemptionSuccessfully() throws Exception {
 
@@ -68,9 +70,13 @@ class RedemptionControllerTest {
         UUID userId = UUID.randomUUID();
         UUID rewardId = UUID.randomUUID();
 
+        User user = new User();
+        user.setId(userId);
+        user.setEmail("user@gmail.com");
+        user.setPassword("123456");
+
         CreateRedemptionRequest request =
                 new CreateRedemptionRequest(
-                        userId,
                         rewardId,
                         2
                 );
@@ -84,11 +90,15 @@ class RedemptionControllerTest {
                         LocalDateTime.now()
                 );
 
-        when(createRedemptionUseCase.execute(any(CreateRedemptionRequest.class)))
-                .thenReturn(response);
+        when(createRedemptionUseCase.execute(
+                eq(userId),
+                any(CreateRedemptionRequest.class)
+        )).thenReturn(response);
 
         mockMvc.perform(
                         post("/api/redemptions/redeem")
+                                .with(authenticatedUser(userId))
+                                .with(csrf())
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(
                                         objectMapper.writeValueAsString(request)
@@ -101,11 +111,190 @@ class RedemptionControllerTest {
                         .value(userId.toString()))
                 .andExpect(jsonPath("$.idReward")
                         .value(rewardId.toString()))
-                .andExpect(jsonPath("$.amount")
+                .andExpect(jsonPath("$.quantity")
                         .value(2));
 
-        verify(createRedemptionUseCase)
-                .execute(any(CreateRedemptionRequest.class));
+        verify(createRedemptionUseCase).execute(
+                eq(userId),
+                any(CreateRedemptionRequest.class)
+        );
+    }
+
+    @Test
+    void shouldReturnBadRequestWhenRewardHasInsufficientStock() throws Exception {
+
+        UUID userId = UUID.randomUUID();
+
+        User user = new User();
+        user.setId(userId);
+        user.setEmail("user@gmail.com");
+        user.setPassword("123456");
+
+        CreateRedemptionRequest request =
+                new CreateRedemptionRequest(
+                        UUID.randomUUID(),
+                        10
+                );
+
+        when(createRedemptionUseCase.execute(
+                eq(userId),
+                any(CreateRedemptionRequest.class)
+        )).thenThrow(
+                new RewardInsufficientStockException(
+                        "Insufficient reward stock"
+                )
+        );
+
+        mockMvc.perform(
+                        post("/api/redemptions/redeem")
+                                .with(authenticatedUser(userId))
+                                .with(csrf())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(
+                                        objectMapper.writeValueAsString(request)
+                                )
+                )
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.error").value("Bad Request"))
+                .andExpect(jsonPath("$.message")
+                        .value("Insufficient reward stock"));
+    }
+
+    @Test
+    void shouldReturnBadRequestWhenRedemptionQuantityIsInvalid() throws Exception {
+
+        UUID userId = UUID.randomUUID();
+
+        User user = new User();
+        user.setId(userId);
+        user.setEmail("user@gmail.com");
+        user.setPassword("123456");
+
+        CreateRedemptionRequest request =
+                new CreateRedemptionRequest(
+                        UUID.randomUUID(),
+                        0
+                );
+
+        when(createRedemptionUseCase.execute(
+                eq(userId),
+                any(CreateRedemptionRequest.class)
+        )).thenThrow(
+                new RedemptionQuanityUnderThanZeroException(
+                        "Redemption quantity must be greater than zero"
+                )
+        );
+
+        mockMvc.perform(
+                        post("/api/redemptions/redeem")
+                                .with(authenticatedUser(userId))
+                                .with(csrf())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(
+                                        objectMapper.writeValueAsString(request)
+                                )
+                )
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.error").value("Bad Request"));
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenRedemptionByUserIdIsNotFound() throws Exception {
+
+        UUID userId = UUID.randomUUID();
+
+        when(getRedemptionByIdUserUseCase.execute(userId))
+                .thenThrow(
+                        new RedemptionNotFoundByIdUserException(
+                                "Redemption not found with id user: " + userId
+                        )
+                );
+
+        mockMvc.perform(
+                        get("/api/redemptions/user/id/{id}", userId)
+                                .with(authenticatedUserId())
+
+                )
+
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status").value(404))
+                .andExpect(jsonPath("$.error").value("Not Found"))
+                .andExpect(
+                        jsonPath("$.message")
+                                .value(
+                                        "Redemption not found with id user: "
+                                                + userId
+                                )
+                );
+
+        verify(getRedemptionByIdUserUseCase)
+                .execute(userId);
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenRedemptionByIdIsNotFound() throws Exception {
+
+        UUID redemptionId = UUID.randomUUID();
+
+        when(getRedemptionByIdUseCase.execute(redemptionId))
+                .thenThrow(
+                        new RedemptionNotFoundByIdException(
+                                "Redemption not found with id: " + redemptionId
+                        )
+                );
+
+        mockMvc.perform(
+                        get("/api/redemptions/id/{id}", redemptionId)
+                                .with(authenticatedUserId())
+
+                )
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status").value(404))
+                .andExpect(jsonPath("$.error").value("Not Found"))
+                .andExpect(
+                        jsonPath("$.message")
+                                .value(
+                                        "Redemption not found with id: "
+                                                + redemptionId
+                                )
+                );
+
+        verify(getRedemptionByIdUseCase)
+                .execute(redemptionId);
+    }
+
+    @Test
+    void shouldReturnNotFoundWhenRedemptionByRewardIdIsNotFound() throws Exception {
+
+        UUID rewardId = UUID.randomUUID();
+
+        when(getRedemptionByIdRewardUseCase.execute(rewardId))
+                .thenThrow(
+                        new RedemptionNotFoundByIdRewardException(
+                                "Redemption not found with id reward: " + rewardId
+                        )
+                );
+
+        mockMvc.perform(
+                        get("/api/redemptions/reward/id/{id}", rewardId)
+                                .with(authenticatedUserId())
+
+                )
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status").value(404))
+                .andExpect(jsonPath("$.error").value("Not Found"))
+                .andExpect(
+                        jsonPath("$.message")
+                                .value(
+                                        "Redemption not found with id reward: "
+                                                + rewardId
+                                )
+                );
+
+        verify(getRedemptionByIdRewardUseCase)
+                .execute(rewardId);
     }
 
     @Test
@@ -132,11 +321,43 @@ class RedemptionControllerTest {
         when(getAllRedemptionsUseCase.execute())
                 .thenReturn(List.of(redemption1, redemption2));
 
-        mockMvc.perform(get("/api/redemptions"))
+        mockMvc.perform(
+                        get("/api/redemptions")
+                                .with(authenticatedUserId())
+                )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2));
 
         verify(getAllRedemptionsUseCase).execute();
+    }
+
+    @Test
+    void shouldReturnRedemptionById() throws Exception {
+
+        UUID redemptionId = UUID.randomUUID();
+
+        RedemptionResponse response =
+                new RedemptionResponse(
+                        redemptionId,
+                        UUID.randomUUID(),
+                        UUID.randomUUID(),
+                        2,
+                        LocalDateTime.now()
+                );
+
+        when(getRedemptionByIdUseCase.execute(redemptionId))
+                .thenReturn(response);
+
+        mockMvc.perform(
+                        get("/api/redemptions/id/{id}", redemptionId)
+                                .with(authenticatedUserId())
+                )
+                .andExpect(status().isAccepted())
+                .andExpect(jsonPath("$.id")
+                        .value(redemptionId.toString()));
+
+        verify(getRedemptionByIdUseCase)
+                .execute(redemptionId);
     }
 
     @Test
@@ -158,8 +379,9 @@ class RedemptionControllerTest {
 
         mockMvc.perform(
                         get("/api/redemptions/user/id/{id}", userId)
+                                .with(authenticatedUserId())
                 )
-                .andExpect(status().isOk())
+                .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.idUser")
                         .value(userId.toString()));
 
@@ -186,8 +408,9 @@ class RedemptionControllerTest {
 
         mockMvc.perform(
                         get("/api/redemptions/reward/id/{id}", rewardId)
+                                .with(authenticatedUserId())
                 )
-                .andExpect(status().isOk())
+                .andExpect(status().isAccepted())
                 .andExpect(jsonPath("$.idReward")
                         .value(rewardId.toString()));
 
@@ -195,117 +418,35 @@ class RedemptionControllerTest {
                 .execute(rewardId);
     }
 
-    @Test
-    void shouldReturnNotFoundWhenRedemptionByUserIsNotFound() throws Exception {
+    private RequestPostProcessor authenticatedUser(UUID userId) {
 
-        UUID idUser = UUID.randomUUID();
+        User user = new User();
+        user.setId(userId);
+        user.setEmail("user@gmail.com");
+        user.setPassword("123456");
 
-        when(getRedemptionByIdUserUseCase.execute(idUser))
-                .thenThrow(new RedemptionNotFoundByIdUserException(
-                        "Redemption not found with id user: " + idUser
-                ));
-
-        mockMvc.perform(get("/api/redemptions/user/id/{id}", idUser))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.status").value(404))
-                .andExpect(jsonPath("$.error").value("Not Found"))
-                .andExpect(jsonPath("$.message")
-                        .value("Redemption not found with id user: " + idUser));
+        return authentication(
+                new UsernamePasswordAuthenticationToken(
+                        user,
+                        null,
+                        user.getAuthorities()
+                )
+        );
     }
 
-    @Test
-    void shouldReturnNotFoundWhenRedemptionByRewardIsNotFound() throws Exception {
+    private RequestPostProcessor authenticatedUserId() {
 
-        UUID idReward = UUID.randomUUID();
+        User user = new User();
+        user.setId(UUID.randomUUID());
+        user.setEmail("user@gmail.com");
+        user.setPassword("123456");
 
-        when(getRedemptionByIdRewardUseCase.execute(idReward))
-                .thenThrow(new RedemptionNotFoundByIdRewardException(
-                        "Redemption not found with id reward: " + idReward
-                ));
-
-        mockMvc.perform(get("/api/redemptions/reward/id/{id}", idReward))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.status").value(404))
-                .andExpect(jsonPath("$.error").value("Not Found"));
-    }
-
-    @Test
-    void shouldReturnNotFoundWhenRedemptionByIdIsNotFound() throws Exception {
-
-        UUID redemptionId = UUID.randomUUID();
-
-        when(getRedemptionByIdUseCase.execute(redemptionId))
-                .thenThrow(new RedemptionNotFoundByIdException(
-                        "Redemption not found with id: " + redemptionId
-                ));
-
-        mockMvc.perform(get("/api/redemptions/id/{id}", redemptionId))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.status").value(404))
-                .andExpect(jsonPath("$.error").value("Not Found"));
-    }
-
-    @Test
-    void shouldReturnBadRequestWhenRewardHasInsufficientStock() throws Exception {
-
-        CreateRedemptionRequest request =
-                new CreateRedemptionRequest(
-                        UUID.randomUUID(),
-                        UUID.randomUUID(),
-                        10
-                );
-
-        when(createRedemptionUseCase.execute(any(CreateRedemptionRequest.class)))
-                .thenThrow(new RewardInsufficientStockException(
-                        "Insufficient reward stock"
-                ));
-
-        mockMvc.perform(post("/api/redemptions/redeem")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status").value(400))
-                .andExpect(jsonPath("$.error").value("Bad Request"))
-                .andExpect(jsonPath("$.message")
-                        .value("Insufficient reward stock"));
-    }
-
-    @Test
-    void shouldReturnBadRequestWhenRedemptionAmountIsInvalid() throws Exception {
-
-        CreateRedemptionRequest request =
-                new CreateRedemptionRequest(
-                        UUID.randomUUID(),
-                        UUID.randomUUID(),
-                        0
-                );
-
-        when(createRedemptionUseCase.execute(any(CreateRedemptionRequest.class)))
-                .thenThrow(new RedemptionAmountUnderThanZeroException(
-                        "Redemption amount must be greater than zero"
-                ));
-
-        mockMvc.perform(post("/api/redemptions/redeem")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.status").value(400))
-                .andExpect(jsonPath("$.error").value("Bad Request"));
-    }
-
-    @Test
-    void shouldReturnNotFoundWhenUserDoesNotExist() throws Exception {
-
-        UUID idUser = UUID.randomUUID();
-
-        when(getRedemptionByIdUserUseCase.execute(idUser))
-                .thenThrow(new UserNotFoundException(
-                        "User not found with id: " + idUser
-                ));
-
-        mockMvc.perform(get("/api/redemptions/user/id/{id}", idUser))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.status").value(404))
-                .andExpect(jsonPath("$.error").value("Not Found"));
+        return authentication(
+                new UsernamePasswordAuthenticationToken(
+                        user,
+                        null,
+                        user.getAuthorities()
+                )
+        );
     }
 }

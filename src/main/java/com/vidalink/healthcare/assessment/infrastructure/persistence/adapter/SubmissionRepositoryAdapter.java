@@ -34,8 +34,8 @@ public class SubmissionRepositoryAdapter implements SubmissionRepository {
     }
 
     @Override
-    public List<Submission> findByUserId(UUID id) {
-        return jpaSubmissionRepository.findSubmissionsByIdUser(id);
+    public List<Submission> findByIdUser(UUID idUser) {
+        return jpaSubmissionRepository.findByIdUser(idUser);
     }
 
     @Override

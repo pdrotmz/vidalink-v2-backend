@@ -9,7 +9,7 @@ import com.vidalink.healthcare.assessment.domain.repository.SubmissionRepository
 import com.vidalink.healthcare.identity.domain.exception.UserNotFoundException;
 import com.vidalink.healthcare.identity.domain.model.User;
 import com.vidalink.healthcare.identity.domain.repository.UserRepository;
-import com.vidalink.healthcare.marketplace.application.port.out.FileStorage;
+import com.vidalink.healthcare.shared.application.port.out.FileStorage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.unit.DataSize;

@@ -33,12 +33,7 @@ public class RewardRepositoryAdapter implements RewardRepository {
 
     @Override
     public boolean existsByName(String name) {
-        return false;
-    }
-
-    @Override
-    public void delete(Reward reward) {
-        jpaRewardRepository.delete(reward);
+        return jpaRewardRepository.existsByName(name);
     }
 
     @Override

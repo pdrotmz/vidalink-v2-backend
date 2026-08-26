@@ -1,5 +1,6 @@
 package com.vidalink.healthcare.assessment.application.usecase;
 
+import com.vidalink.healthcare.assessment.domain.exception.SubmissionNotFoundByIdException;
 import com.vidalink.healthcare.assessment.domain.model.Submission;
 import com.vidalink.healthcare.assessment.domain.repository.SubmissionRepository;
 import com.vidalink.healthcare.identity.domain.exception.UserNotFoundException;
@@ -24,6 +25,10 @@ public class GetSubmissionsByIdUserUseCaseImpl implements GetSubmissionsByIdUser
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + id));
 
-        return submissionRepository.findByUserId(user.getId());
+        if(submissionRepository.findByIdUser(id) == null || submissionRepository.findByIdUser(id).isEmpty()) {
+            throw new SubmissionNotFoundByIdException(id);
+        }
+
+        return submissionRepository.findByIdUser(user.getId());
     }
 }

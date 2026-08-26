@@ -16,7 +16,7 @@ public interface SubmissionRepository {
 
     List<Submission> findAll();
 
-    List<Submission> findByUserId(UUID id);
+    List<Submission> findByIdUser(UUID idUser);
 
     List<SubmissionResponse> findByStatus(ValidationStatus status);
 

@@ -1,9 +1,9 @@
 package com.vidalink.healthcare.gamification.application.usecase.userbadge;
 
-import com.vidalink.healthcare.gamification.entity.dto.response.userbadge.UserBadgeResponse;
-import com.vidalink.healthcare.gamification.entity.domain.userbadge.UserBadge;
-import com.vidalink.healthcare.gamification.entity.enums.badge.Badge;
-import com.vidalink.healthcare.gamification.entity.repository.userbadge.UserBadgeRepository;
+import com.vidalink.healthcare.gamification.application.dto.response.userbadge.UserBadgeResponse;
+import com.vidalink.healthcare.gamification.domain.enums.badge.Badge;
+import com.vidalink.healthcare.gamification.domain.model.userbadge.UserBadge;
+import com.vidalink.healthcare.gamification.domain.repository.userbadge.UserBadgeRepository;
 import com.vidalink.healthcare.identity.domain.exception.UserNotFoundException;
 import com.vidalink.healthcare.identity.domain.model.User;
 import com.vidalink.healthcare.identity.domain.repository.UserRepository;

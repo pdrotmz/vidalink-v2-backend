@@ -1,6 +1,6 @@
 package com.vidalink.healthcare.gamification.infrastructure.adapter.pointtransaction;
 
-import com.vidalink.healthcare.gamification.entity.domain.pointtransaction.PointTransaction;
+import com.vidalink.healthcare.gamification.domain.model.pointtransaction.PointTransaction;
 import com.vidalink.healthcare.gamification.infrastructure.persistence.adapter.pointtransaction.PointTransactionRepositoryAdapter;
 import com.vidalink.healthcare.gamification.infrastructure.persistence.jpa.pointtransaction.JpaPointTransactionRepository;
 import org.junit.jupiter.api.Test;

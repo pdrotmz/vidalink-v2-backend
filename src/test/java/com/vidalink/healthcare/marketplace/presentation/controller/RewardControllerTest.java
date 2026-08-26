@@ -1,15 +1,16 @@
 package com.vidalink.healthcare.marketplace.presentation.controller;
 
-import com.vidalink.healthcare.identity.infrastructure.persistence.jwt.JwtService;
-import com.vidalink.healthcare.identity.infrastructure.security.UserDetailsServiceImpl;
 import com.vidalink.healthcare.marketplace.application.dto.request.reward.CreateRewardRequest;
 import com.vidalink.healthcare.marketplace.application.dto.request.reward.UpdateRewardRequest;
 import com.vidalink.healthcare.marketplace.application.dto.response.reward.RewardResponse;
 import com.vidalink.healthcare.marketplace.application.usecase.reward.*;
+import com.vidalink.healthcare.marketplace.domain.exception.reward.ImageEmptyException;
 import com.vidalink.healthcare.marketplace.domain.exception.reward.RewardAlreadyExistsByNameException;
 import com.vidalink.healthcare.marketplace.domain.exception.reward.RewardNotFoundByIdException;
 import com.vidalink.healthcare.marketplace.domain.exception.reward.RewardNotFoundByNameException;
+import com.vidalink.healthcare.marketplace.infrastructure.persistence.jwt.JwtService;
 import com.vidalink.healthcare.marketplace.presentation.controller.reward.RewardController;
+import com.vidalink.healthcare.shared.infrastructure.security.UserDetailsServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
@@ -24,7 +25,8 @@ import tools.jackson.databind.ObjectMapper;
 import java.util.List;
 import java.util.UUID;
 
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -78,7 +80,8 @@ public class RewardControllerTest {
         CreateRewardRequest request = new CreateRewardRequest(
                 "GIFT CARD LOL",
                 "Description Test",
-                100
+                100,
+                20
         );
 
         MockMultipartFile reward = new MockMultipartFile(
@@ -99,6 +102,7 @@ public class RewardControllerTest {
                 UUID.randomUUID(),
                 "GIFT CARD LOL",
                 "Description Test",
+                100,
                 100,
                 "rewards/" + UUID.randomUUID(),
                 true
@@ -136,6 +140,7 @@ public class RewardControllerTest {
                 "GIFT CARD LOL",
                 "Description Test",
                 120,
+                120,
                 "rewards/" + rewardId,
                 true
         );
@@ -165,6 +170,7 @@ public class RewardControllerTest {
                 "GIFT CARD LOL",
                 "Description Test",
                 120,
+                120,
                 "rewards/" + rewardId,
                 true
         );
@@ -193,6 +199,7 @@ public class RewardControllerTest {
                 "GIFT CARD LOL",
                 "Description Test",
                 120,
+                12,
                 "rewards/" + rewardId,
                 true
         );
@@ -219,6 +226,7 @@ public class RewardControllerTest {
                 rewardId,
                 "GIFT CARD LOL",
                 "Description Test",
+                120,
                 120,
                 "rewards/" + rewardId,
                 true
@@ -254,6 +262,7 @@ public class RewardControllerTest {
                 "GIFT CARD YOUTUBE",
                 "Updated description",
                 50,
+                120,
                 "rewards/" + rewardId,
                 true
         );
@@ -293,6 +302,7 @@ public class RewardControllerTest {
                 "GIFT CARD LOL",
                 "Description Test",
                 100,
+                120,
                 "rewards/" + rewardId,
                 true
         );
@@ -321,6 +331,41 @@ public class RewardControllerTest {
     }
 
     @Test
+    void shouldReturnBadRequestWhenImageIsEmpty() throws Exception {
+
+        UUID rewardId = UUID.randomUUID();
+
+        MockMultipartFile image = new MockMultipartFile(
+                "image",
+                "empty.png",
+                MediaType.IMAGE_PNG_VALUE,
+                new byte[0]
+        );
+
+        doThrow(
+                new ImageEmptyException("Image cannot be empty")
+        ).when(updateRewardImageUseCase)
+                .execute(eq(rewardId), any(MultipartFile.class));
+
+        mockMvc.perform(
+                        multipart("/api/rewards/id/{id}/image", rewardId)
+                                .file(image)
+                                .with(request -> {
+                                    request.setMethod("PATCH");
+                                    return request;
+                                })
+                )
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.error").value("Bad Request"))
+                .andExpect(jsonPath("$.message")
+                        .value("Image cannot be empty"));
+
+        verify(updateRewardImageUseCase)
+                .execute(eq(rewardId), any(MultipartFile.class));
+    }
+
+    @Test
     void shouldDeactivateRewardSuccessfully() throws Exception {
 
         UUID rewardId = UUID.randomUUID();
@@ -343,6 +388,7 @@ public class RewardControllerTest {
         CreateRewardRequest request = new CreateRewardRequest(
                 "GIFT CARD LOL",
                 "Description Test",
+                100,
                 100
         );
 

@@ -21,8 +21,8 @@ public class Redemption {
     @Column(name = "id_reward", nullable = false, updatable = false)
     private UUID idReward;
 
-    @Column(name = "amount", nullable = false, updatable = false)
-    private int amount;
+    @Column(name = "quantity", nullable = false, updatable = false)
+    private int quantity;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
