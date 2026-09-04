@@ -1,5 +1,6 @@
 package com.vidalink.healthcare.marketplace.presentation.controller;
 
+import com.vidalink.healthcare.identity.domain.enums.UserRole;
 import com.vidalink.healthcare.identity.domain.model.User;
 import com.vidalink.healthcare.marketplace.application.dto.request.redemption.CreateRedemptionRequest;
 import com.vidalink.healthcare.marketplace.application.dto.response.redemption.RedemptionResponse;
@@ -423,6 +424,7 @@ class RedemptionControllerTest {
         User user = new User();
         user.setId(userId);
         user.setEmail("user@gmail.com");
+        user.setRole(UserRole.CLIENT);
         user.setPassword("123456");
 
         return authentication(
@@ -439,6 +441,7 @@ class RedemptionControllerTest {
         User user = new User();
         user.setId(UUID.randomUUID());
         user.setEmail("user@gmail.com");
+        user.setRole(UserRole.CLIENT);
         user.setPassword("123456");
 
         return authentication(

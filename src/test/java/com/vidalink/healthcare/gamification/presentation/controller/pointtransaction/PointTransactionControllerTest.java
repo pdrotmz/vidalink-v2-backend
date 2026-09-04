@@ -17,6 +17,7 @@ import com.vidalink.healthcare.gamification.domain.enums.level.Level;
 import com.vidalink.healthcare.gamification.domain.enums.pointtransaction.PointTransactionSource;
 import com.vidalink.healthcare.gamification.domain.enums.pointtransaction.PointTransactionType;
 import com.vidalink.healthcare.gamification.presentation.controller.PointTransactionController;
+import com.vidalink.healthcare.identity.domain.enums.UserRole;
 import com.vidalink.healthcare.identity.domain.model.User;
 import com.vidalink.healthcare.marketplace.infrastructure.persistence.jwt.JwtService;
 import com.vidalink.healthcare.shared.infrastructure.security.UserDetailsServiceImpl;
@@ -275,6 +276,7 @@ class PointTransactionControllerTest {
         User user = new User();
         user.setId(userId);
         user.setEmail("user@test.com");
+        user.setRole(UserRole.CLIENT);
         user.setPassword("123456");
 
         return authentication(
@@ -291,6 +293,7 @@ class PointTransactionControllerTest {
         User admin = new User();
         admin.setId(userId);
         admin.setEmail("admin@vidalink.com");
+        admin.setRole(UserRole.ADMIN);
         admin.setPassword("123456");
 
         return authentication(

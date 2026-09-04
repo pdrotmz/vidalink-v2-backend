@@ -6,5 +6,7 @@ public interface FileStorage {
 
     String upload(InputStream inputStream, String path, String contentType);
 
+    InputStream download(String path);
+
     void delete(String path);
 }

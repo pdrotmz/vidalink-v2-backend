@@ -6,6 +6,7 @@ import com.vidalink.healthcare.identity.infrastructure.persistence.jpa.JpaUserRe
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,6 +15,11 @@ import java.util.UUID;
 public class UserRepositoryAdapter implements UserRepository {
 
     private final JpaUserRepository repository;
+
+    @Override
+    public List<User> findAll() {
+        return repository.findAll();
+    }
 
     @Override
     public Optional<User> findById(UUID id) {

@@ -1,6 +1,7 @@
 package com.vidalink.healthcare.entity.presentation.controller;
 
 import com.vidalink.healthcare.identity.application.dto.response.MeResponse;
+import com.vidalink.healthcare.identity.application.usecase.GetAllUsersUseCase;
 import com.vidalink.healthcare.identity.application.usecase.GetCurrentUserUseCase;
 import com.vidalink.healthcare.identity.domain.enums.UserRole;
 import com.vidalink.healthcare.identity.domain.model.User;
@@ -36,6 +37,9 @@ public class UserControllerTest {
     private GetCurrentUserUseCase getCurrentUserUseCase;
 
     @MockitoBean
+    private GetAllUsersUseCase getAllUsersUseCase;
+
+    @MockitoBean
     private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     // TODO: Verify this test
@@ -53,6 +57,7 @@ public class UserControllerTest {
                 user.getId(),
                 user.getName(),
                 user.getEmail(),
+                user.getCpf(),
                 user.getRole()
         );
 

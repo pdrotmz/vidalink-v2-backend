@@ -49,11 +49,8 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-
-        String authority = email.toLowerCase().endsWith("@vidalink.com") ? "ROLE_ADMIN" : "ROLE_USER";
-
         return List.of(
-                new SimpleGrantedAuthority(authority)
+                new SimpleGrantedAuthority("ROLE_" + role.name())
         );
     }
 

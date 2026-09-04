@@ -65,6 +65,9 @@ public class RewardControllerTest {
     GetRewardByIdUseCaseImpl getRewardByIdUseCase;
 
     @MockitoBean
+    private GetRewardImageUseCaseImpl getRewardImageUseCase;
+
+    @MockitoBean
     UpdateRewardUseCaseImpl updateRewardUseCase;
 
     @MockitoBean
