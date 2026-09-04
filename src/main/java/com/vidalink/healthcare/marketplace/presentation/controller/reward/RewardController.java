@@ -2,6 +2,7 @@ package com.vidalink.healthcare.marketplace.presentation.controller.reward;
 
 import com.vidalink.healthcare.marketplace.application.dto.request.reward.CreateRewardRequest;
 import com.vidalink.healthcare.marketplace.application.dto.request.reward.UpdateRewardRequest;
+import com.vidalink.healthcare.marketplace.application.dto.response.reward.RewardImageResponse;
 import com.vidalink.healthcare.marketplace.application.dto.response.reward.RewardResponse;
 import com.vidalink.healthcare.marketplace.application.usecase.reward.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,6 +13,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +43,7 @@ public class RewardController {
     private final DeactivateRewardUseCaseImpl deactivateRewardUseCase;
     private final UpdateRewardUseCaseImpl updateRewardUseCase;
     private final UpdateRewardImageUseCaseImpl updateRewardImageUseCase;
+    private final GetRewardImageUseCaseImpl getRewardImageUseCase;
 
     @Operation(summary = "Register a reward", description = "Creates a reward")
     @ApiResponses({
@@ -77,6 +81,13 @@ public class RewardController {
             @PathVariable("id") @Valid UUID id) {
         RewardResponse rewardId = getRewardByIdUseCase.execute(id);
         return ResponseEntity.accepted().body(rewardId);
+    }
+
+    @GetMapping("/id/{id}/image")
+    public ResponseEntity<Resource> getImage(@PathVariable UUID id) {
+
+        RewardImageResponse image = getRewardImageUseCase.execute(id);
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(new InputStreamResource(image.inputStream()));
     }
 
     @Operation(summary = "Get reward by name", description = "Get a specific reward info by name.")

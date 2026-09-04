@@ -57,6 +57,11 @@ public class SecurityConfig {
                                 "/swagger-ui.html"
                         ).permitAll()
 
+                        //ADMIN - Users
+                        .requestMatchers(
+                                "/api/users/"
+                        ).hasRole("ADMIN")
+
                         // ADMIN - Rewards
                         .requestMatchers(
                                 "/api/rewards/create",
@@ -69,7 +74,8 @@ public class SecurityConfig {
                                 "/api/rewards/",
                                 "/api/rewards/id/{id}",
                                 "/api/rewards/name/{name}",
-                                "/api/rewards/search"
+                                "/api/rewards/search",
+                                "/api/rewards/id/{id}/image"
                         ).authenticated()
 
                         // AUTHENTICATED - Redemptions
@@ -83,7 +89,7 @@ public class SecurityConfig {
 
                         // AUTHENTICATED - Submissions
                         .requestMatchers(
-                                "/api/submission/send",
+                                "/api/submissions/send",
                                 "/api/submissions",
                                 "/api/submissions/id/{id}",
                                 "/api/submissions/id/user/{id}"
@@ -91,6 +97,7 @@ public class SecurityConfig {
 
                         // ADMIN - Submission management
                         .requestMatchers(
+                                "/api/submissions/status",
                                 "/api/submissions/id/status/{id}/approve",
                                 "/api/submissions/id/status/{id}/reject",
                                 "/api/submissions/id/delete/{id}"
