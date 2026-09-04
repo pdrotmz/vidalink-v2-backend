@@ -3,4 +3,4 @@ spring:
     name: vidalink
   profiles:
     active:
-      - dev
+      - test
