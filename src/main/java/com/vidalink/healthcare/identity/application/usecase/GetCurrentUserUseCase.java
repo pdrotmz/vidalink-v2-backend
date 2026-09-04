@@ -14,6 +14,7 @@ public class GetCurrentUserUseCase {
                 user.getId(),
                 user.getName(),
                 user.getEmail(),
+                user.getCpf(),
                 user.getRole()
         );
     }

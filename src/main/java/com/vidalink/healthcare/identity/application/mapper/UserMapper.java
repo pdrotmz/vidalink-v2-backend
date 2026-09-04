@@ -1,7 +1,7 @@
 package com.vidalink.healthcare.identity.application.mapper;
 
 import com.vidalink.healthcare.identity.application.dto.request.RegisterRequest;
-import com.vidalink.healthcare.identity.application.dto.response.RegisterResponse;
+import com.vidalink.healthcare.identity.application.dto.response.UserResponse;
 import com.vidalink.healthcare.identity.domain.enums.UserRole;
 import com.vidalink.healthcare.identity.domain.model.User;
 
@@ -22,10 +22,15 @@ public class UserMapper {
         return user;
     }
 
-    public static RegisterResponse toResponse(User user) {
-        return new RegisterResponse(
+    public static UserResponse toResponse(User user) {
+        return new UserResponse(
+                user.getId(),
                 user.getName(),
-                user.getEmail()
+                user.getEmail(),
+                user.getCpf(),
+                user.getRole(),
+                user.getCreatedAt(),
+                user.getUpdatedAt()
         );
     }
 }

@@ -16,6 +16,9 @@ public record MeResponse(
         @Schema(description = "user email", example = "pedro@gmail.com")
         String email,
 
+        @Schema(description = "user cpf", example = "12345678900")
+        String cpf,
+
         @Schema(description = "user role", example = "CLIENT/ADMIN")
         UserRole role
 ) {

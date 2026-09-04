@@ -53,6 +53,7 @@ public class UserControllerTest {
                 user.getId(),
                 user.getName(),
                 user.getEmail(),
+                user.getCpf(),
                 user.getRole()
         );
 
