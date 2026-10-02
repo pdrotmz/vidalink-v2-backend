@@ -95,15 +95,15 @@ It includes:
 
 ### Development
 
-- [ ] Implement the backend
-- [ ] Implement the frontend
-- [ ] Add automated tests
-- [ ] Configure Docker
-- [ ] Configure monitoring with Grafana
+- [x] Implement the backend
+- [x] Implement the frontend
+- [x] Add automated tests
+- [x] Configure Docker
+- [x] Configure monitoring with Grafana
 
 ### Deployment
 
-- [ ] Deploy the application
+- [x] Deploy the application
 
 ---
 
